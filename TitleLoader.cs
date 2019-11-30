@@ -15,7 +15,7 @@ namespace IMDB_DATABASE
         /// </summary>
         /// <param name="filename"> Accepts a file name </param>
         /// <returns> Returns an IEnumerable of ITitle </returns>
-        public IEnumerable<ITitle> LoadTitlesBasic(string filename)
+        public ICollection<ITitle> LoadTitlesBasic(string filename)
         {
             // Title basic params
             string id = default;
@@ -34,7 +34,7 @@ namespace IMDB_DATABASE
             string firstCharsOfLine;
 
             // List of titlesBasic
-            ICollection<TitleBasic> titlesBasic = new List<TitleBasic>();
+            ICollection<ITitle> titlesBasic = new List<ITitle>();
 
             // Instantiate Stream reader
             StreamReader file = new StreamReader(filename);
@@ -58,7 +58,7 @@ namespace IMDB_DATABASE
             // Close the file
             file.Close();
 
-            // Returns the list
+            // Returns the collection
             return titlesBasic;
         }
 
