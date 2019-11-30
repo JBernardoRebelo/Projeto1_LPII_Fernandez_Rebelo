@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 
 namespace IMDB_DATABASE
@@ -44,7 +43,7 @@ namespace IMDB_DATABASE
                 // Split lines in tabs
                 splitLine = line.Split('\t').ToArray();
 
-                if (!splitLine[0].Contains("tc"))
+                if (splitLine[0] != "tconst")
                 {
                     // Split line to corresponding title properties
 
@@ -101,6 +100,7 @@ namespace IMDB_DATABASE
                     // Add the title to the collection
                     titlesBasic.Add(title);
 
+                    // Debug
                     OutputTestFile(title);
 
                     --reps;
@@ -109,6 +109,7 @@ namespace IMDB_DATABASE
                     {
                         break;
                     }
+                    // ********
                 }
             }
 
@@ -119,7 +120,73 @@ namespace IMDB_DATABASE
             return titlesBasic;
         }
 
-        public static void OutputTestFile(TitleBasic t)
+
+        public static ICollection<ITitle> LoadTitlesRating(StreamReader file)
+        {
+            // Instance variables to assign
+            string id = default;
+            float avgRating = default;
+            int numVotes = default;
+
+            // Debug
+            int reps = 20;
+
+            // Line
+            string line;
+            string[] splitLine;
+
+            // List of titlesBasic
+            ICollection<ITitle> titlesRating = new List<ITitle>();
+
+            // Sort file
+            while ((line = file.ReadLine()) != null)
+            {
+                splitLine = line.Split('\t').ToArray();
+
+                // Title Id
+                if (splitLine[0] != "tconst")
+                {
+                    id = splitLine[0];
+
+                    // Title Type
+                    avgRating = Convert.ToSingle(splitLine[1]);
+
+                    // Primary title
+                    numVotes = Convert.ToInt32(splitLine[2]);
+
+                    TitleRating titleR = new TitleRating
+                        (id, avgRating, numVotes);
+
+                    // Add instance to the collection
+                    titlesRating.Add(titleR);
+
+                    //
+                    OutputTestFile(titleR);
+
+                    // Debug
+                    --reps;
+
+                    if (reps < 0)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            // Returns the collection
+            return titlesRating;
+        }
+
+        // Debug method for output
+        private static void OutputTestFile(TitleRating t)
+        {
+            Console.Write($"{t.ID} - ");
+            Console.Write($"{t.AvgRating} - ");
+            Console.Write($"{t.NumVotes} - \n");
+        }
+
+        // Debug method for out put
+        private static void OutputTestFile(TitleBasic t)
         {
             Console.Write($"{t.ID} - ");
             Console.Write($"{t.Type} - ");
