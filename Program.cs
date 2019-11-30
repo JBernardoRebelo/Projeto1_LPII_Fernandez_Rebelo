@@ -16,7 +16,7 @@ namespace IMDB_DATABASE
         {
             // Ao nível de um método
             // Caminho completo da pasta contendo os ficheiros de dados
-            string folderWithFiles 
+            string folderWithFiles
                 = Path.Combine(Environment.GetFolderPath
                 (Environment.SpecialFolder.LocalApplicationData),
                 appName);
@@ -34,25 +34,7 @@ namespace IMDB_DATABASE
             StreamReader file = new StreamReader(zipFile);
 
             TitleLoader.LoadTitlesBasic(file);
-
             // Call loop
-
-            // Debug **************************************************
-            string line;
-            string[] splitLine;
-
-            line = "ttas";
-
-            string firstChars = line[0].ToString() + line[1].ToString();
-            Console.WriteLine(firstChars);
-
-            // Split lines in tabs
-            splitLine = line.Split('\t').ToArray();
-
-            if (firstChars == "tt")
-            {
-
-            }
         }
     }
 }

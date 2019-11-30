@@ -81,6 +81,7 @@ namespace IMDB_DATABASE
                     }
 
                     // Genres
+                    // Add strings split with ", " to the collelction of genres
                     if (splitLine[8] != null)
                     {
                         string[] strg = splitLine[8].Split(',');
@@ -96,6 +97,7 @@ namespace IMDB_DATABASE
                         isAdult, startYear,
                         endYear, runTime, genres);
 
+                    // Add the title to the collection
                     titlesBasic.Add(title);
 
                     OutputTestFile(title);
