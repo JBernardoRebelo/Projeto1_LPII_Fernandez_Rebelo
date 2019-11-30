@@ -7,6 +7,7 @@ namespace IMDB_DATABASE
     public class Render
     {
         // Greet user method
+        
 
         // Something
     }
