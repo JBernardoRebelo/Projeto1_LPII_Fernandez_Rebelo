@@ -26,7 +26,7 @@ namespace IMDB_DATABASE
             int startYear = default;
             int endYear = default;
             int runTime = default;
-            HashSet<string> genres = default;
+            HashSet<string> genres = new HashSet<string>();
 
             int reps = 20;
 
@@ -80,18 +80,15 @@ namespace IMDB_DATABASE
                         runTime = Convert.ToInt32(splitLine[7]);
                     }
 
-                    string strg = default;
                     // Genres
                     if (splitLine[8] != null)
                     {
-                        strg = splitLine[8];
+                        string[] strg = splitLine[8].Split(',');
+                        for (int i = 0; i < strg.Length; ++i)
+                        {
+                            genres.Add(strg[i]);
+                        }
                     }
-
-
-                    //foreach (string s in strg)
-                    //{
-                    //    genres.Add(s);
-                    //}
 
                     // Instatiate title
                     TitleBasic title = new TitleBasic(id, type,
@@ -105,7 +102,7 @@ namespace IMDB_DATABASE
 
                     --reps;
 
-                    if(reps < 0)
+                    if (reps < 0)
                     {
                         break;
                     }
@@ -129,7 +126,11 @@ namespace IMDB_DATABASE
             Console.Write($"{t.StartYear} - ");
             Console.Write($"{t.EndYear} - ");
             Console.Write($"{t.RunTimeMin} - ");
-            Console.Write($"{t.Genres} - \n");
+            foreach (string s in t.Genres)
+            {
+                Console.Write($"{s}, ");
+            }
+            Console.WriteLine();
         }
     }
 }
