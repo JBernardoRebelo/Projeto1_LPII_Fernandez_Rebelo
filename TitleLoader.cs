@@ -10,6 +10,11 @@ namespace IMDB_DATABASE
     /// </summary>
     public class TitleLoader
     {
+        /// <summary>
+        /// Instantiates basic titles in a file
+        /// </summary>
+        /// <param name="filename"> Accepts a file name </param>
+        /// <returns> Returns an IEnumerable of ITitle </returns>
         public IEnumerable<ITitle> LoadTitlesBasic(string filename)
         {
             // Title basic params
