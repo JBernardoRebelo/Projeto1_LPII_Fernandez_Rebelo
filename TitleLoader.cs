@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 
 namespace IMDB_DATABASE
@@ -65,7 +66,11 @@ namespace IMDB_DATABASE
         public static void  OutputTestFile(string filename)
         {
             // Instantiate Stream reader
-            StreamReader file = new StreamReader(filename);
+            FileStream fs = new FileStream(
+                filename, FileMode.Open, FileAccess.Read);
+            GZipStream zipFile = new GZipStream(fs, CompressionMode.Decompress);
+            StreamReader file = new StreamReader(zipFile);
+            
             int i = 0;
             string line;
 
