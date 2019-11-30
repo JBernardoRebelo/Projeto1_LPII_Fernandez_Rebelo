@@ -5,7 +5,7 @@ namespace IMDB_DATABASE
     /// <summary>
     /// Class for basic Title File
     /// </summary>
-    public class TitleBasic : ITitle
+    public struct TitleBasic : ITitle
     {
         /// <summary>
         /// ID - tconst
