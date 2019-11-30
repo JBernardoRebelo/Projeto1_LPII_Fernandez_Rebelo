@@ -61,5 +61,20 @@ namespace IMDB_DATABASE
             // Returns the collection
             return titlesBasic;
         }
+
+        public static void  OutputTestFile(string filename)
+        {
+            // Instantiate Stream reader
+            StreamReader file = new StreamReader(filename);
+            int i = 0;
+            string line;
+
+            while ((line = file.ReadLine()) != null && i < 20)
+            {
+                Console.WriteLine(line);
+
+                i++;
+            }
+        }
     }
 }
