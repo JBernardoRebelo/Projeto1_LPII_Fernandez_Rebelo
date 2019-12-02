@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace IMDB_DATABASE
@@ -19,13 +20,19 @@ namespace IMDB_DATABASE
         /// </summary>
         private Render _render;
 
+        private ICollection<ITitle> _titlesBasic;
+        private ICollection<ITitle> _titlesRating;
+
         /// <summary>
         /// Constructor to initialize class variables
         /// </summary>
-        public SearchLoop()
+        public SearchLoop(StreamReader file)
         {
             _render = new Render();
             _uInput = default;
+
+            // Load titles to collection
+            _titlesBasic = TitleLoader.LoadTitlesBasic(file);
         }
 
         // Menu tipo de pesquisa
@@ -104,7 +111,7 @@ namespace IMDB_DATABASE
         /// <returns> User input, if valid.</returns>
         private void GetUserInput()
         {
-            
+
             do
             {
                 _uInput = Console.ReadLine().ToLower();
@@ -113,7 +120,6 @@ namespace IMDB_DATABASE
                 {
                     _render.ErrorMessage();
                 }
-
             } while (_uInput == null && _uInput != "t" && _uInput != "q");
         }
 
@@ -124,10 +130,9 @@ namespace IMDB_DATABASE
         private void TitleSearch()
         {
             string titleToSearch = GetTitle();
-
             _uInput = titleToSearch;
 
-
+            OutputWantedTitles(_uInput);
         }
 
         /// <summary>
@@ -153,6 +158,29 @@ namespace IMDB_DATABASE
         private void QuitProgram()
         {
             Environment.Exit(0);
+        }
+
+        // Outputs the title wanted
+        private void OutputWantedTitles(string name)
+        {
+            // This must pause every 20 iterations
+            int i = 0;
+
+            foreach (TitleBasic tb in _titlesBasic)
+            {
+                if (tb.PrimTitle.Contains(name) || tb.OrigiTitle.Contains(name))
+                {
+                    _render.PrintTitleInfo(tb);
+                    ++i;
+                }
+
+                if (i >= 20)
+                {
+                    // Wait for user input
+                    Console.ReadLine();
+                    i = 0;
+                }
+            }
         }
     }
 }

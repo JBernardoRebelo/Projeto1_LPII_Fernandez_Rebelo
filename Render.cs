@@ -10,6 +10,14 @@ namespace IMDB_DATABASE
     public class Render
     {
         /// <summary>
+        /// Accepts a title basic and prints all info about it
+        /// </summary>
+        public Action<TitleBasic> PrintTitleInfo = tb
+            => Console.WriteLine($"ID -> {tb.ID} " +
+                $"Type: {tb.Type} PrimTitle: {tb.PrimTitle} " +
+                $"OriginalTytle: {tb.PrimTitle}");
+
+        /// <summary>
         /// Method to introduce the user to the program and explain functions
         /// </summary>
         public void Greetings()

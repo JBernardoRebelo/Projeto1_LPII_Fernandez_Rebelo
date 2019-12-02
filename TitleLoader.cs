@@ -28,7 +28,7 @@ namespace IMDB_DATABASE
             int runTime = default;
             HashSet<string> genres = new HashSet<string>();
 
-            int reps = 20;
+            //int reps = 20;
 
             // Line
             string line;
@@ -101,15 +101,15 @@ namespace IMDB_DATABASE
                     titlesBasic.Add(title);
 
                     // Debug
-                    OutputTestFile(title);
+                    //OutputTestFile(title);
 
-                    --reps;
+                    //--reps;
 
-                    if (reps < 0)
-                    {
-                        break;
-                    }
-                    // ********
+                    //if (reps < 0)
+                    //{
+                    //    break;
+                    //}
+                    //// ********
                 }
             }
 
@@ -129,7 +129,7 @@ namespace IMDB_DATABASE
             int numVotes = default;
 
             // Debug
-            int reps = 20;
+            //int reps = 20;
 
             // Line
             string line;
@@ -160,16 +160,7 @@ namespace IMDB_DATABASE
                     // Add instance to the collection
                     titlesRating.Add(titleR);
 
-                    //
-                    OutputTestFile(titleR);
-
-                    // Debug
-                    --reps;
-
-                    if (reps < 0)
-                    {
-                        break;
-                    }
+                    //OutputTestFile(titleR);
                 }
             }
 

@@ -14,13 +14,19 @@ namespace IMDB_DATABASE
 
         private static void Main(string[] args)
         {
+            // **********************************************************
             // Static method call LoadTitlesBasic - static for debug
-            Console.WriteLine("\nBASIC FILE\n");
-            TitleLoader.LoadTitlesBasic(MakeReadableBasics());
-            Console.WriteLine("\nRATING'S FILE\n");
-            TitleLoader.LoadTitlesRating(MakeReadableRatings());
+            //Console.WriteLine("\nBASIC FILE\n");
+            //TitleLoader.LoadTitlesBasic(MakeReadableBasics());
+            //Console.WriteLine("\nRATING'S FILE\n");
+            //TitleLoader.LoadTitlesRating(MakeReadableRatings());
+            // **********************************************************
 
-            // Call loop
+
+            // Call loop, accepts the readable files - so far only basics
+            SearchLoop loop = new SearchLoop(MakeReadableBasics());
+
+            loop.ActualLoop();
         }
 
 
