@@ -6,7 +6,7 @@ namespace IMDB_DATABASE
 {
     public class Program
     {
-        // Ao nível de uma classe
+        // Class consts
         const string appName = "MyIMDBSearcher";
         private const string fileTitleBasics = "title.basics.tsv.gz";
         private const string fileTitleRatings = "title.ratings.tsv.gz";
@@ -24,26 +24,33 @@ namespace IMDB_DATABASE
             string fileTitleRatingsFull = Path.Combine(folderWithFiles, fileTitleRatings);
 
 
-            TitleLoader.OutputTestFile(fileTitleBasicsFull);
+            //TitleLoader.OutputTestFile(fileTitleBasicsFull);
 
             // Call loop
 
             // Debug **************************************************
-            string line;
-            string[] splitLine;
+            SearchLoop loop = new SearchLoop();
 
-            line = "ttas";
+            loop.ActualLoop();
 
-            string firstChars = line[0].ToString() + line[1].ToString();
-            Console.WriteLine(firstChars);
 
-            // Split lines in tabs
-            splitLine = line.Split('\t').ToArray();
+            //string line;
+            //string[] splitLine;
 
-            if (firstChars == "tt")
-            {
+            //line = "ttas";
 
-            }
+            //string firstChars = line[0].ToString() + line[1].ToString();
+            //Console.WriteLine(firstChars);
+
+            //// Split lines in tabs
+            //splitLine = line.Split('\t').ToArray();
+
+            //if (firstChars == "tt")
+            //{
+
+            //}
+
+            // End debug methods **************************************
         }
     }
 }
