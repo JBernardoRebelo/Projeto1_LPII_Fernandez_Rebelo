@@ -7,7 +7,7 @@ namespace IMDB_DATABASE
 {
     public class Program
     {
-        // Ao nível de uma classe
+        // Class consts
         const string appName = "MyIMDBSearcher";
         private const string fileTitleBasics = "title.basics.tsv.gz";
         private const string fileTitleRatings = "title.ratings.tsv.gz";
@@ -22,6 +22,7 @@ namespace IMDB_DATABASE
 
             // Call loop
         }
+
 
         // Returns a streamReader file to use - title basics
         private static StreamReader MakeReadableBasics()
