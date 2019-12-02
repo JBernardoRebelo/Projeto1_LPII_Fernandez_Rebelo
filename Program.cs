@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 
 namespace IMDB_DATABASE
@@ -13,44 +14,57 @@ namespace IMDB_DATABASE
 
         private static void Main(string[] args)
         {
-            // Ao nível de um método
-            // Caminho completo da pasta contendo os ficheiros de dados
-            string folderWithFiles = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            // Static method call LoadTitlesBasic - static for debug
+            Console.WriteLine("\nBASIC FILE\n");
+            TitleLoader.LoadTitlesBasic(MakeReadableBasics());
+            Console.WriteLine("\nRATING'S FILE\n");
+            TitleLoader.LoadTitlesRating(MakeReadableRatings());
+
+            // Call loop
+        }
+
+
+        // Returns a streamReader file to use - title basics
+        private static StreamReader MakeReadableBasics()
+        {
+            string folderWithFiles
+                = Path.Combine(Environment.GetFolderPath
+                (Environment.SpecialFolder.LocalApplicationData),
                 appName);
 
             // Caminho completo de cada um dos ficheiros de dados
-            string fileTitleBasicsFull = Path.Combine(folderWithFiles, fileTitleBasics);
-            string fileTitleRatingsFull = Path.Combine(folderWithFiles, fileTitleRatings);
+            string fileTitleBasicsFull = Path.Combine(folderWithFiles,
+                fileTitleBasics);
 
+            FileStream fs = new FileStream(fileTitleBasicsFull,
+                FileMode.Open, FileAccess.Read);
+            GZipStream zipFile = new GZipStream(fs,
+                CompressionMode.Decompress);
+            StreamReader file = new StreamReader(zipFile);
 
-            //TitleLoader.OutputTestFile(fileTitleBasicsFull);
-
-            // Call loop
-
-            // Debug **************************************************
-            SearchLoop loop = new SearchLoop();
-
-            loop.ActualLoop();
-
-
-            //string line;
-            //string[] splitLine;
-
-            //line = "ttas";
-
-            //string firstChars = line[0].ToString() + line[1].ToString();
-            //Console.WriteLine(firstChars);
-
-            //// Split lines in tabs
-            //splitLine = line.Split('\t').ToArray();
-
-            //if (firstChars == "tt")
-            //{
-
-            //}
-
-            // End debug methods **************************************
+            return file;
         }
+
+        // Returns a streamReader file to use - title ratings
+        private static StreamReader MakeReadableRatings()
+        {
+            // Access needed folder
+            string folderWithFiles
+                = Path.Combine(Environment.GetFolderPath
+                (Environment.SpecialFolder.LocalApplicationData),
+                appName);
+
+            string fileTitleRatingsFull = Path.Combine(folderWithFiles,
+                fileTitleRatings);
+
+            FileStream fs = new FileStream(fileTitleRatingsFull,
+                FileMode.Open, FileAccess.Read);
+            GZipStream zipFile = new GZipStream(fs,
+                CompressionMode.Decompress);
+            StreamReader file = new StreamReader(zipFile);
+
+            return file;
+        }
+
     }
 }
