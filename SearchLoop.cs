@@ -111,7 +111,7 @@ namespace IMDB_DATABASE
         /// <returns> User input, if valid.</returns>
         private void GetUserInput()
         {
-            
+
             do
             {
                 _uInput = Console.ReadLine().ToLower();
@@ -166,17 +166,19 @@ namespace IMDB_DATABASE
             // This must pause every 20 iterations
             int i = 0;
 
-            foreach(TitleBasic tb in _titlesBasic)
+            foreach (TitleBasic tb in _titlesBasic)
             {
-                if(tb.PrimTitle.Contains(name) || tb.OrigiTitle.Contains(name))
+                if (tb.PrimTitle.Contains(name) || tb.OrigiTitle.Contains(name))
                 {
                     _render.PrintTitleInfo(tb);
+                    ++i;
                 }
-                ++i;
 
-                if(i > 20)
+                if (i >= 20)
                 {
-                    break;
+                    // Wait for user input
+                    Console.ReadLine();
+                    i = 0;
                 }
             }
         }
