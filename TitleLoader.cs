@@ -149,7 +149,8 @@ namespace IMDB_DATABASE
                     id = splitLine[0];
 
                     // Title Type
-                    avgRating = Convert.ToSingle(splitLine[1]);
+
+                    _ = float.TryParse(splitLine[1], out avgRating);
 
                     // Primary title
                     numVotes = Convert.ToInt32(splitLine[2]);
