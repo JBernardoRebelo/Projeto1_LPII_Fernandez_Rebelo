@@ -108,26 +108,23 @@ namespace IMDB_DATABASE
         /// <summary>
         /// Method to get user input to be used in menus.
         /// </summary>
-        /// <param name="input"> String to be stored user input.</param>
-        /// <returns> User input, if valid.</returns>
         private void GetUserInput()
         {
-
             do
             {
                 _uInput = Console.ReadLine().ToLower();
 
-                if (_uInput == null && _uInput != "t" && _uInput != "q")
+                if (_uInput == null || _uInput != "t" || _uInput != "q")
                 {
                     _render.ErrorMessage();
                 }
+
             } while (_uInput == null && _uInput != "t" && _uInput != "q");
         }
 
         /// <summary>
         /// Method to search user selected title to search for.
         /// </summary>
-        /// <param name="_uInput"> Class variable where title name was stored.</param>
         private void TitleSearch()
         {
             string titleToSearch = GetTitle();
@@ -180,6 +177,7 @@ namespace IMDB_DATABASE
                     // Wait for user input
                     Console.ReadLine();
                     i = 0;
+                    Console.Clear();
                 }
             }
         }
