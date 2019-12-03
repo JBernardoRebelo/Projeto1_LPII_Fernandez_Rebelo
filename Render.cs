@@ -13,9 +13,10 @@ namespace IMDB_DATABASE
         /// Accepts a title basic and prints all info about it
         /// </summary>
         public Action<TitleBasic> PrintTitleInfo = tb
-            => Console.WriteLine($"ID -> {tb.ID} " +
-                $"Type: {tb.Type} PrimTitle: {tb.PrimTitle} " +
-                $"OriginalTytle: {tb.PrimTitle}");
+            => Console.WriteLine($"Type: {tb.Type}, " +
+                $"Primary Title: {tb.PrimTitle}, " +
+                $"For Adults: {tb.IsAdult}, Start Year: {tb.StartYear}," +
+                $"End Year: {tb.EndYear} Genres: {tb.Genres}");
 
         /// <summary>
         /// Method to introduce the user to the program and explain functions

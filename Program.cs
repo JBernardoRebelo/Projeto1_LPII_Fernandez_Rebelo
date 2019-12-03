@@ -24,7 +24,8 @@ namespace IMDB_DATABASE
 
 
             // Call loop, accepts the readable files - so far only basics
-            SearchLoop loop = new SearchLoop(MakeReadableBasics());
+            SearchLoop loop = new SearchLoop
+                (MakeReadableBasics(), MakeReadableRatings());
 
             loop.ActualLoop();
         }
