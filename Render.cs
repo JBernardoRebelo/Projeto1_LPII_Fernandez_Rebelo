@@ -45,6 +45,8 @@ namespace IMDB_DATABASE
         public void ErrorMessage()
         {
             Console.WriteLine("Invalid input. Please try again.");
+            Console.ReadKey();
+            Console.Clear();
         }
 
         /// <summary>
