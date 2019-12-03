@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace IMDB_DATABASE
 {
@@ -54,7 +52,8 @@ namespace IMDB_DATABASE
         /// </summary>
         public void GoodByeMessage()
         {
-            Console.WriteLine("Thank you for using the pro");
+            Console.Clear();
+            Console.WriteLine("Thank you for using the program!");
         }
 
     }
