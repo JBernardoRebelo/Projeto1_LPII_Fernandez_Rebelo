@@ -10,7 +10,6 @@ namespace IMDB_DATABASE
     public class SearchLoop
     {
         // Class variables
-
         /// <summary>
         /// Variable to store user input
         /// </summary>
