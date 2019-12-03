@@ -99,17 +99,6 @@ namespace IMDB_DATABASE
 
                     // Add the title to the collection
                     titlesBasic.Add(title);
-
-                    // Debug
-                    //OutputTestFile(title);
-
-                    //--reps;
-
-                    //if (reps < 0)
-                    //{
-                    //    break;
-                    //}
-                    //// ********
                 }
             }
 
@@ -165,6 +154,9 @@ namespace IMDB_DATABASE
                 }
             }
 
+            // Close file
+            file.Close();
+
             // Returns the collection
             return titlesRating;
         }
@@ -175,24 +167,6 @@ namespace IMDB_DATABASE
             Console.Write($"{t.ID} - ");
             Console.Write($"{t.AvgRating} - ");
             Console.Write($"{t.NumVotes} - \n");
-        }
-
-        // Debug method for out put
-        private static void OutputTestFile(TitleBasic t)
-        {
-            Console.Write($"{t.ID} - ");
-            Console.Write($"{t.Type} - ");
-            Console.Write($"{t.PrimTitle} - ");
-            Console.Write($"{t.OrigiTitle} - ");
-            Console.Write($"{t.IsAdult} - ");
-            Console.Write($"{t.StartYear} - ");
-            Console.Write($"{t.EndYear} - ");
-            Console.Write($"{t.RunTimeMin} - ");
-            foreach (string s in t.Genres)
-            {
-                Console.Write($"{s}, ");
-            }
-            Console.WriteLine();
         }
     }
 }
