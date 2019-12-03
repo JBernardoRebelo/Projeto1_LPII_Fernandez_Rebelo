@@ -179,6 +179,7 @@ namespace IMDB_DATABASE
                     // Wait for user input
                     Console.ReadLine();
                     i = 0;
+                    Console.Clear();
                 }
             }
         }
