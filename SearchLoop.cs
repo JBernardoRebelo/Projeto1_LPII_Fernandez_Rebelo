@@ -26,13 +26,14 @@ namespace IMDB_DATABASE
         /// <summary>
         /// Constructor to initialize class variables
         /// </summary>
-        public SearchLoop(StreamReader file)
+        public SearchLoop(StreamReader fileBasic, StreamReader fileRating)
         {
             _render = new Render();
             _uInput = default;
 
             // Load titles to collection
-            _titlesBasic = TitleLoader.LoadTitlesBasic(file);
+            _titlesBasic = TitleLoader.LoadTitlesBasic(fileBasic);
+            _titlesRating = TitleLoader.LoadTitlesRating(fileRating);
         }
 
         // Menu tipo de pesquisa
