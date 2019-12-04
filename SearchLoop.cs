@@ -76,10 +76,33 @@ namespace IMDB_DATABASE
             while (true)
             {
                 _render.Greetings();
+
+                // Debug
+                ICollection<ITitle> newList;
+                newList = OrderRatingCollection(_titlesRating);
+                int i = 0;
+                foreach (TitleRating t in _titlesRating)
+                {
+                    ++i;
+                    OutputTestFile(t);
+                    if(i > 30)
+                    {
+                        break;
+                    }
+                }
+                // ***
+
                 GetUserInput();
                 TypeOfSearch();
             }
+        }
 
+        // Debug method for output
+        private static void OutputTestFile(TitleRating t)
+        {
+            Console.Write($"{t.ID} - ");
+            Console.Write($"{t.AvgRating} - ");
+            Console.Write($"{t.NumVotes} - \n");
         }
 
         /// <summary>
@@ -158,7 +181,7 @@ namespace IMDB_DATABASE
             Environment.Exit(0);
         }
 
-        // Outputs the title wanted
+        // Outputs the title wanted ordered by rating
         private void OutputWantedTitles(string name)
         {
             // This must pause every 20 iterations
@@ -180,6 +203,30 @@ namespace IMDB_DATABASE
                     Console.Clear();
                 }
             }
+        }
+
+        private ICollection<ITitle> OrderRatingCollection
+            (ICollection<ITitle> titleRatings)
+        {
+            TitleRating prevTitle = new TitleRating("tt22", 0.0f, 0);
+
+            List<TitleRating> orderedRatings
+                = new List<TitleRating>();
+
+            foreach (TitleRating tr in titleRatings)
+            {
+                if (tr.AvgRating > prevTitle.AvgRating)
+                {
+                    orderedRatings.Insert(0, tr);
+                    prevTitle = tr;
+                }
+                else
+                {
+                    orderedRatings.Insert(orderedRatings.Count - 1, tr);
+                }
+            }
+
+            return orderedRatings as ICollection<ITitle>;
         }
     }
 }
