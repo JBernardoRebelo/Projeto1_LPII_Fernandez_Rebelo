@@ -14,7 +14,9 @@
 
 **João**: UML, Ficheiro *README*. Leitura e conversão de ficheiros para coleções. Ordenação de coleções. `class ITitle` e derivadas, `class TitleLoader`.
 
-**Miguel**: UML, `class SearchLoop`, menus, garantir que programa leia independentemente da linguagem do computador.
+**Miguel**: UML, `class SearchLoop`, menus, garantir que programa leia
+independentemente da linguagem do computador. Ordenação de coleções com
+`Sort`.
 
 ## Descrição e arquitetura da Solução
 
@@ -27,7 +29,7 @@ utilizador. Criámos uma interface `ITitle` que contém um `ID` que é comum a
 todos os _Titles_, com isto fizémos com que as `structs` `TitleBasic` e
 `TitleRating` herdassem desta.
 
-A `struct TitleBasic` contem os parâmetros
+A _struct_ `TitleBasic` contem os parâmetros
 necessários para instanciar os _Titles_ vindos do ficheiro
 `title.basics.tsv.gz`, enquanto que a `struct TitleRating` tem os parâmetros
 para instanciar os _Titles_ vindos do ficheiro `title.ratings.tsv.gz`.
@@ -36,12 +38,12 @@ A classe `TitleLoader` é responsável por converter os ficheiros dados em
 coleções de `TitleRating` e `TitleBasic` que são inicializadas na classe
 `SearchLoop` onde, como referido anteriormente, é feito o ciclo de pesquisa.
 
-A `class Render` é usada para demonstrar e escrever na consola o pretendido
-pelo utilizador e informações de menus.
+A classe `Render` é usada para demonstrar e escrever na consola o
+pretendido pelo utilizador e informações de menus.
 
-A `class FileHandler` contém métodos para descomprimir e converter ficheiros
-de modo a que o programa consiga ler e fazer as conversões necessárias
-posteriormente.
+A classe `FileHandler` contém métodos para descomprimir e converter
+ficheiros de modo a que o programa consiga ler e fazer as conversões
+necessárias posteriormente.
 
 Tentámos ao máximo utilizar coleções no seu nível mais abstrato
 `IEnumerable` ou `ICollection`, no entanto existem métodos que só terão o
