@@ -20,9 +20,15 @@ namespace IMDB_DATABASE
         /// </summary>
         private Render _render;
 
+        /// <summary>
+        /// Collection that contains basic title info
+        /// </summary>
         private ICollection<ITitle> _titlesBasic;
+
+        /// <summary>
+        /// Collection that contains title ratings
+        /// </summary>
         private ICollection<ITitle> _titlesRating;
-        ICollection<TitleRating> newList;
 
         /// <summary>
         /// Constructor to initiate the search loop
@@ -41,8 +47,6 @@ namespace IMDB_DATABASE
             // Load titles to collection
             _titlesBasic = TitleLoader.LoadTitlesBasic(fileBasic);
             _titlesRating = TitleLoader.LoadTitlesRating(fileRating);
-
-            newList = OrderRatingCollection(_titlesRating);
         }
 
         // Menu tipo de pesquisa
@@ -80,18 +84,24 @@ namespace IMDB_DATABASE
         /// <summary>
         /// Main method where the search loop occours
         /// </summary>
-        public void ActualLoop()
+        public void Loop()
         {
             while (true)
             {
                 _render.Greetings();
+                // DEBUG METHOD **********************************************
+                _render.ShowRAMUsage();
+                // END DEBUG *************************************************
 
-                // Debug
+                // Debug******************************************************
                 int i = 0;
-                foreach (TitleRating t in newList)
+                foreach (ITitle t in _titlesRating)
                 {
-                    ++i;
-                    OutputTestFile(t);
+                    i++;
+                    if (t is TitleRating)
+                    {
+                    OutputTestFile((TitleRating)t);
+                    }
                     if (i > 30)
                     {
                         break;
@@ -104,13 +114,14 @@ namespace IMDB_DATABASE
             }
         }
 
-        // Debug method for output
+        // Debug method for output ********************************************
         private static void OutputTestFile(TitleRating t)
         {
             Console.Write($"{t.ID} - ");
             Console.Write($"{t.AvgRating} - ");
             Console.Write($"{t.NumVotes} - \n");
         }
+        // End of debug method ************************************************
 
         /// <summary>
         /// Method where the type of search in the database is selected
@@ -160,7 +171,7 @@ namespace IMDB_DATABASE
             string titleToSearch = GetTitle();
             _uInput = titleToSearch;
 
-            OutputWantedTitles(_uInput);
+            ShowSearchTitle(_uInput);
         }
 
         /// <summary>
@@ -194,7 +205,7 @@ namespace IMDB_DATABASE
         /// <param name="name">
         /// User input title string
         /// </param>
-        private void OutputWantedTitles(string name)
+        private void ShowSearchTitle(string name)
         {
             // This must pause every 20 iterations
             int i = 0;
@@ -204,7 +215,7 @@ namespace IMDB_DATABASE
                 if (tb.PrimTitle.Contains(name) ||
                     tb.OrigiTitle.Contains(name))
                 {
-                    _render.PrintTitleInfo(tb);
+                    _render.PrintSearchInfo(tb);
                     ++i;
                 }
 
@@ -216,31 +227,6 @@ namespace IMDB_DATABASE
                     Console.Clear();
                 }
             }
-        }
-        
-
-        private List<TitleRating> OrderRatingCollection
-            (ICollection<ITitle> titleRatings)
-        {
-            TitleRating prevTitle = new TitleRating("tt22", 0.0f, 0);
-
-            List<TitleRating> orderedRatings
-                = new List<TitleRating>();
-
-            foreach (TitleRating tr in titleRatings)
-            {
-                if (tr.AvgRating > prevTitle.AvgRating)
-                {
-                    orderedRatings.Insert(0, tr);
-                    prevTitle = tr;
-                }
-                else
-                {
-                    orderedRatings.Insert(orderedRatings.Count - 1, tr);
-                }
-            }
-
-            return orderedRatings;
         }
     }
 }

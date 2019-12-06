@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Globalization;
 using System.Linq;
 
 namespace IMDB_DATABASE
@@ -41,7 +42,7 @@ namespace IMDB_DATABASE
             while ((line = file.ReadLine()) != null)
             {
                 // Split lines in tabs
-                splitLine = line.Split('\t').ToArray();
+                splitLine = line.Split('\t');
 
                 if (splitLine[0] != "tconst")
                 {
@@ -112,10 +113,12 @@ namespace IMDB_DATABASE
 
         public static ICollection<ITitle> LoadTitlesRating(StreamReader file)
         {
-            // Instance variables to assign
+            // Block variables to assign
             string id = default;
             float avgRating = default;
             int numVotes = default;
+            NumberStyles numberStyles = NumberStyles.Any;
+            CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture("en-US");
 
             // Debug
             //int reps = 20;
@@ -125,12 +128,12 @@ namespace IMDB_DATABASE
             string[] splitLine;
 
             // List of titlesBasic
-            ICollection<ITitle> titlesRating = new List<ITitle>();
+            List<ITitle> titlesRating = new List<ITitle>();
 
             // Sort file
             while ((line = file.ReadLine()) != null)
             {
-                splitLine = line.Split('\t').ToArray();
+                splitLine = line.Split('\t');
 
                 // Title Id
                 if (splitLine[0] != "tconst")
@@ -138,27 +141,28 @@ namespace IMDB_DATABASE
                     id = splitLine[0];
 
                     // Title Type
-
-                    _ = float.TryParse(splitLine[1], out avgRating);
+                    _ = float.TryParse(
+                       splitLine[1], numberStyles, cultureInfo, out avgRating);
 
                     // Primary title
                     numVotes = Convert.ToInt32(splitLine[2]);
 
+                    // Create a new instance of TitleRating
                     TitleRating titleR = new TitleRating
                         (id, avgRating, numVotes);
 
                     // Add instance to the collection
                     titlesRating.Add(titleR);
-
-                    //OutputTestFile(titleR);
                 }
             }
 
             // Close file
             file.Close();
 
+            titlesRating.Sort();
+
             // Returns the collection
             return titlesRating;
-        } 
+        }
     }
 }
