@@ -12,7 +12,7 @@
 
 ### Quem fez o quê
 
-**João**: Ficheiro *README*. Leitura e conversão de ficheiros para coleções. Ordenação de coleções. `class ITitle` e derivadas, `class TitleLoader`.
+**João**: UML, Ficheiro *README*. Leitura e conversão de ficheiros para coleções. Ordenação de coleções. `class ITitle` e derivadas, `class TitleLoader`.
 
 **Miguel**: UML, `class SearchLoop`, menus, garantir que programa leia independentemente da linguagem do computador.
 
@@ -53,6 +53,8 @@ cada _Title_ que é um `Hashset<string>` de forma a preparar para a pesquisa
 por géneros.
 
 ## Diagrama UML
+
+![](UMLDatabase.png)
 
 ## Referências
 
