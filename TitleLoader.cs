@@ -159,14 +159,6 @@ namespace IMDB_DATABASE
 
             // Returns the collection
             return titlesRating;
-        }
-
-        // Debug method for output
-        private static void OutputTestFile(TitleRating t)
-        {
-            Console.Write($"{t.ID} - ");
-            Console.Write($"{t.AvgRating} - ");
-            Console.Write($"{t.NumVotes} - \n");
-        }
+        } 
     }
 }

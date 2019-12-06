@@ -22,6 +22,7 @@ namespace IMDB_DATABASE
 
         private ICollection<ITitle> _titlesBasic;
         private ICollection<ITitle> _titlesRating;
+        ICollection<TitleRating> newList;
 
         /// <summary>
         /// Constructor to initiate the search loop
@@ -40,6 +41,8 @@ namespace IMDB_DATABASE
             // Load titles to collection
             _titlesBasic = TitleLoader.LoadTitlesBasic(fileBasic);
             _titlesRating = TitleLoader.LoadTitlesRating(fileRating);
+
+            newList = OrderRatingCollection(_titlesRating);
         }
 
         // Menu tipo de pesquisa
@@ -82,9 +85,31 @@ namespace IMDB_DATABASE
             while (true)
             {
                 _render.Greetings();
+
+                // Debug
+                int i = 0;
+                foreach (TitleRating t in newList)
+                {
+                    ++i;
+                    OutputTestFile(t);
+                    if (i > 30)
+                    {
+                        break;
+                    }
+                }
+                // ***
+
                 GetUserInput();
                 TypeOfSearch();
             }
+        }
+
+        // Debug method for output
+        private static void OutputTestFile(TitleRating t)
+        {
+            Console.Write($"{t.ID} - ");
+            Console.Write($"{t.AvgRating} - ");
+            Console.Write($"{t.NumVotes} - \n");
         }
 
         /// <summary>
@@ -191,6 +216,31 @@ namespace IMDB_DATABASE
                     Console.Clear();
                 }
             }
+        }
+        
+
+        private List<TitleRating> OrderRatingCollection
+            (ICollection<ITitle> titleRatings)
+        {
+            TitleRating prevTitle = new TitleRating("tt22", 0.0f, 0);
+
+            List<TitleRating> orderedRatings
+                = new List<TitleRating>();
+
+            foreach (TitleRating tr in titleRatings)
+            {
+                if (tr.AvgRating > prevTitle.AvgRating)
+                {
+                    orderedRatings.Insert(0, tr);
+                    prevTitle = tr;
+                }
+                else
+                {
+                    orderedRatings.Insert(orderedRatings.Count - 1, tr);
+                }
+            }
+
+            return orderedRatings;
         }
     }
 }

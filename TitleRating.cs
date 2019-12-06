@@ -1,4 +1,6 @@
-﻿namespace IMDB_DATABASE
+﻿using System.Collections.Generic;
+
+namespace IMDB_DATABASE
 {
     public struct TitleRating : ITitle
     {
