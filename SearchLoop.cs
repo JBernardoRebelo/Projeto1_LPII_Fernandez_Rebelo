@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace IMDB_DATABASE
 {
@@ -15,6 +14,7 @@ namespace IMDB_DATABASE
         /// Variable to store user input
         /// </summary>
         private string _uInput;
+
         /// <summary>
         /// Instance of the Render class where all output messages exist
         /// </summary>
@@ -24,8 +24,14 @@ namespace IMDB_DATABASE
         private ICollection<ITitle> _titlesRating;
 
         /// <summary>
-        /// Constructor to initialize class variables
+        /// Constructor to initiate the search loop
         /// </summary>
+        /// <param name="fileBasic"> 
+        /// File that constains basic title information
+        /// </param>
+        /// <param name="fileRating">
+        /// File that contains title rating information
+        /// </param>
         public SearchLoop(StreamReader fileBasic, StreamReader fileRating)
         {
             _render = new Render();
@@ -137,7 +143,7 @@ namespace IMDB_DATABASE
             {
                 _uInput = Console.ReadLine().ToLower();
 
-                if (_uInput == null || _uInput != "t" || _uInput != "q")
+                if (_uInput == null || _uInput != "t" && _uInput != "q")
                 {
                     _render.ErrorMessage();
                 }
@@ -181,7 +187,12 @@ namespace IMDB_DATABASE
             Environment.Exit(0);
         }
 
-        // Outputs the title wanted ordered by rating
+        /// <summary>
+        /// Method that prints title that contain user input string
+        /// </summary>
+        /// <param name="name">
+        /// User input title string
+        /// </param>
         private void OutputWantedTitles(string name)
         {
             // This must pause every 20 iterations
@@ -189,7 +200,8 @@ namespace IMDB_DATABASE
 
             foreach (TitleBasic tb in _titlesBasic)
             {
-                if (tb.PrimTitle.Contains(name) || tb.OrigiTitle.Contains(name))
+                if (tb.PrimTitle.Contains(name) ||
+                    tb.OrigiTitle.Contains(name))
                 {
                     _render.PrintTitleInfo(tb);
                     ++i;
