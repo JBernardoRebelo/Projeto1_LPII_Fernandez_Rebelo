@@ -22,6 +22,7 @@ namespace IMDB_DATABASE
 
         private ICollection<ITitle> _titlesBasic;
         private ICollection<ITitle> _titlesRating;
+        ICollection<TitleRating> newList;
 
         /// <summary>
         /// Constructor to initiate the search loop
@@ -40,6 +41,8 @@ namespace IMDB_DATABASE
             // Load titles to collection
             _titlesBasic = TitleLoader.LoadTitlesBasic(fileBasic);
             _titlesRating = TitleLoader.LoadTitlesRating(fileRating);
+
+            newList = OrderRatingCollection(_titlesRating);
         }
 
         // Menu tipo de pesquisa
@@ -84,14 +87,12 @@ namespace IMDB_DATABASE
                 _render.Greetings();
 
                 // Debug
-                ICollection<ITitle> newList;
-                newList = OrderRatingCollection(_titlesRating);
                 int i = 0;
-                foreach (TitleRating t in _titlesRating)
+                foreach (TitleRating t in newList)
                 {
                     ++i;
                     OutputTestFile(t);
-                    if(i > 30)
+                    if (i > 30)
                     {
                         break;
                     }
@@ -216,8 +217,9 @@ namespace IMDB_DATABASE
                 }
             }
         }
+        
 
-        private ICollection<ITitle> OrderRatingCollection
+        private List<TitleRating> OrderRatingCollection
             (ICollection<ITitle> titleRatings)
         {
             TitleRating prevTitle = new TitleRating("tt22", 0.0f, 0);
@@ -238,7 +240,7 @@ namespace IMDB_DATABASE
                 }
             }
 
-            return orderedRatings as ICollection<ITitle>;
+            return orderedRatings;
         }
     }
 }
