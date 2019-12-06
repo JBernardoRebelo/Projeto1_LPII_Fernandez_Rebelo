@@ -80,5 +80,15 @@ namespace IMDB_DATABASE
             RunTimeMin = runTime;
             Genres = genres;
         }
+
+        public int Compare(ITitle x, ITitle y)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public int CompareTo(ITitle other)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
