@@ -14,10 +14,12 @@ namespace IMDB_DATABASE
         /// Folder name where files exist
         /// </summary>
         private const string appName = "MyIMDBSearcher";
+
         /// <summary>
         /// Basic title compressed file name
         /// </summary>
         private const string fileTitleBasics = "title.basics.tsv.gz";
+
         /// <summary>
         /// Title ratings compressed file name
         /// </summary>
