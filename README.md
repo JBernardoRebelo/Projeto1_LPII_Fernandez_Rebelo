@@ -12,17 +12,19 @@
 
 ### Quem fez o quê
 
-**João**: UML, Ficheiro *README*. Leitura e conversão de ficheiros para coleções. Ordenação de coleções. `class ITitle` e derivadas, `class TitleLoader`.
+**João**: UML, Ficheiro *README*. Leitura e conversão de ficheiros para
+coleções. Ordenação de coleções. classe `ITitle` e derivadas, classe
+`TitleLoader`.
 
-**Miguel**: UML, `class SearchLoop`, menus, garantir que programa leia
+**Miguel**: UML, classe `SearchLoop`, menus, garantir que programa leia
 independentemente da linguagem do computador. Ordenação de coleções com
-`Sort`.
+`Sort`. Expressões query e otimizações.
 
 ## Descrição e arquitetura da Solução
 
 O programa foi organizado com lógicas parecidas a projetos anteriores,
 definimos que a classe `program` só teria a inicialização do programa geral,
-chamando o método `Loop()` através de uma instância da `class SearchLoop`.
+chamando o método `Loop()` através de uma instância da classe `SearchLoop`.
 
 Esta classe é responsável pelo ciclo de pesquisa gerindo o _input_ do
 utilizador. Criámos uma interface `ITitle` que contém um `ID` que é comum a
@@ -78,6 +80,7 @@ por géneros.
 
 - *[C# float.Parse String](https://stackoverflow.com/questions/27722032/c-sharp-float-parse-string)*
 - *[Sorting a List](https://stackoverflow.com/questions/3738639/sorting-a-listint)*
+- *[Using LINQ to query](https://stackoverflow.com/questions/29152932/using-linq-to-query-concrete-classes-stored-in-base-class-tables)*
 
 #### *[.NET API](https://docs.microsoft.com/en-us/dotnet/api/?view=netcore-2.2)*
 
