@@ -1,46 +1,46 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace IMDB_DATABASE
 {
     /// <summary>
     /// Class to instantiate titles and store them in Collections
     /// </summary>
-    public class TitleLoader
+    public static class TitleLoader
     {
         /// <summary>
         /// Instantiates basic titles in a file
         /// </summary>
-        /// <param name="filename"> Accepts a file name </param>
-        /// <returns> Returns an IEnumerable of ITitle </returns>
+        /// <param name="filename"> Accepts a file name. </param>
+        /// <returns> Returns an ICollection of ITitle title basic info. 
+        /// </returns>
         public static ICollection<ITitle> LoadTitlesBasic(StreamReader file)
         {
-            // Title basic params
-            string id = default;
-            string type = default;
-            string primTitle = default;
-            string origiTitle = default;
-            bool isAdult = default;
-            int startYear = default;
-            int endYear = default;
-            int runTime = default;
-            HashSet<string> genres = new HashSet<string>();
+            // List of titlesBasic
+            List<ITitle> titlesBasic = new List<ITitle>();
 
-            //int reps = 20;
+            // Title basic params
+            string id;
+            string type;
+            string primTitle;
+            string origiTitle;
+            bool isAdult;
+            ushort startYear = default;
+            ushort endYear = default;
+            ushort runTime = default;
+            List<string> genres;
 
             // Line
             string line;
             string[] splitLine;
 
-            // List of titlesBasic
-            ICollection<ITitle> titlesBasic = new List<ITitle>();
-
             // Sort file
             while ((line = file.ReadLine()) != null)
             {
+                genres = new List<string>(3);
+
                 // Split lines in tabs
                 splitLine = line.Split('\t');
 
@@ -66,26 +66,27 @@ namespace IMDB_DATABASE
                     // Start year
                     if (splitLine[5] != @"\N")
                     {
-                        startYear = Convert.ToInt32(splitLine[5]);
+                        startYear = Convert.ToUInt16(splitLine[5]);
                     }
 
                     // End year
                     if (splitLine[6] != @"\N")
                     {
-                        endYear = Convert.ToInt32(splitLine[6]);
+                        endYear = Convert.ToUInt16(splitLine[6]);
                     }
 
                     // Run time
                     if (splitLine[7] != @"\N")
                     {
-                        runTime = Convert.ToInt32(splitLine[7]);
+                        runTime = Convert.ToUInt16(splitLine[7]);
                     }
 
                     // Genres
-                    // Add strings split with ", " to the collelction of genres
+                    // Add strings split with ", " to the collection of genres
                     if (splitLine[8] != null)
                     {
                         string[] strg = splitLine[8].Split(',');
+
                         for (int i = 0; i < strg.Length; ++i)
                         {
                             genres.Add(strg[i]);
@@ -110,18 +111,16 @@ namespace IMDB_DATABASE
             return titlesBasic;
         }
 
-
+        /// <summary>
+        /// Instanciates title ratings in a file
+        /// </summary>
+        /// <param name="file"> Accepts a file name. </param>
+        /// <returns> Returns an ICollection of ITitle title ratings. </returns>
         public static ICollection<ITitle> LoadTitlesRating(StreamReader file)
         {
-            // Block variables to assign
-            string id = default;
-            float avgRating = default;
-            int numVotes = default;
+
             NumberStyles numberStyles = NumberStyles.Any;
             CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture("en-US");
-
-            // Debug
-            //int reps = 20;
 
             // Line
             string line;
@@ -138,11 +137,14 @@ namespace IMDB_DATABASE
                 // Title Id
                 if (splitLine[0] != "tconst")
                 {
-                    id = splitLine[0];
+                    // Block variables to assign
+                    int numVotes;
+                    string id = splitLine[0];
 
                     // Title Type
-                    _ = float.TryParse(
-                       splitLine[1], numberStyles, cultureInfo, out avgRating);
+                    float.TryParse(
+                       splitLine[1], numberStyles, cultureInfo,
+                       out float avgRating);
 
                     // Primary title
                     numVotes = Convert.ToInt32(splitLine[2]);
@@ -158,8 +160,6 @@ namespace IMDB_DATABASE
 
             // Close file
             file.Close();
-
-            titlesRating.Sort();
 
             // Returns the collection
             return titlesRating;
