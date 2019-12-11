@@ -2,14 +2,16 @@
 {
     public class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
-            // Call loop, accepts the readable files - so far only basics
+            // Declares and creates a new instance of SearchLoop class to run
+            // search loop
             SearchLoop searchLoop = new SearchLoop
                 (FileHandler.MakeReadableBasics(),
                  FileHandler.MakeReadableRatings());
 
-            searchLoop.Loop();
+            // Search loop method
+            searchLoop.BeginSearch();
         }
     }
 }
