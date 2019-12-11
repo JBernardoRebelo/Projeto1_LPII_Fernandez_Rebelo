@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Generic; 
 
 namespace IMDB_DATABASE
 {
@@ -35,40 +35,41 @@ namespace IMDB_DATABASE
         /// <summary>
         /// Start year - startYear
         /// </summary>
-        public int StartYear { get; }
+        public ushort StartYear { get; }
 
         /// <summary>
         /// End Year - endYear
         /// </summary>
-        public int EndYear { get; }
+        public ushort EndYear { get; }
 
         /// <summary>
         /// Run Time in Minutes - runtimeMinutes
         /// </summary>
-        public int RunTimeMin { get; }
+        public ushort RunTimeMin { get; }
 
         /// <summary>
-        /// "Array" of Genres - genres
+        /// Array of Genres - genres
         /// </summary>
-        public HashSet<string> Genres { get; }
+        public ICollection<string> Genres { get; }
 
         /// <summary>
-        /// Accepts as argument all properties to assign
+        /// Constructor that uses params to set values to all properties.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="type"></param>
-        /// <param name="primTitle"></param>
-        /// <param name="origiTitle"></param>
-        /// <param name="isAdult"></param>
-        /// <param name="startYear"></param>
-        /// <param name="endYear"></param>
-        /// <param name="runTime"></param>
-        /// <param name="genres"></param>
+        /// <param name="id"> Title's ID. </param>
+        /// <param name="type"> Title's type. </param>
+        /// <param name="primTitle"> Title's primary title. </param>
+        /// <param name="origiTitle"> Title's original title. </param>
+        /// <param name="isAdult"> If title has adult content. </param>
+        /// <param name="startYear"> Year that title was released. </param>
+        /// <param name="endYear"> Year that title ended, if it was a series.
+        /// </param>
+        /// <param name="runTime"> Title's length. </param>
+        /// <param name="genres"> Title's genre/genres. </param>
         public TitleBasic(string id, string type,
             string primTitle, string origiTitle,
-            bool isAdult, int startYear,
-            int endYear, int runTime,
-            HashSet<string> genres)
+            bool isAdult, ushort startYear,
+            ushort endYear, ushort runTime,
+            ICollection<string> genres)
         {
             ID = id;
             Type = type;
@@ -79,16 +80,6 @@ namespace IMDB_DATABASE
             EndYear = endYear;
             RunTimeMin = runTime;
             Genres = genres;
-        }
-
-        public int Compare(ITitle x, ITitle y)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public int CompareTo(ITitle other)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
