@@ -7,7 +7,7 @@ namespace IMDB_DATABASE
     /// Interface to be extended in diferent
     /// Types of Titles (basic, rating, etc)
     /// </summary>
-    public interface ITitle : IComparer<ITitle>, IComparable<ITitle>
+    public interface ITitle
     {
         /// <summary>
         /// ID - tconst
