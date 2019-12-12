@@ -33,6 +33,8 @@ namespace IMDB_DATABASE
             ushort runTime = default;
             List<string> genres;
 
+            int debug = 0;
+
             // Line
             string line;
             string[] splitLine;
@@ -102,6 +104,12 @@ namespace IMDB_DATABASE
 
                     // Add the title to the collection
                     titlesBasic.Add(title);
+
+                    debug++;
+                    if(debug > 50)
+                    {
+                        
+                    }
                 }
             }
 
@@ -171,19 +179,22 @@ namespace IMDB_DATABASE
         //public ICollection<ITitle> CombineTitleCollections(
         //    ICollection<ITitle> basic, ICollection<ITitle> rating)
         //{
-        //    rating.Join(basic,
+        //    var query 
+        //        = rating.Join(basic,
         //                title => title,
-                         
+
         //                (fullTitle, rate) =>
         //            new { fullTit = person.Name, Pet = pet.Name });
 
-        //    foreach (var obj in query)
+        //    foreach (ITitle title in query)
         //    {
         //        Console.WriteLine(
         //            "{0} - {1}",
-        //            obj.OwnerName,
-        //            obj.Pet);
+        //            title.,
+        //            title.Pet);
         //    }
+
+        //    return 
         //}
 
         //Join(IEnumerable<TOuter>, IEnumerable<TInner>, Func<TOuter, TKey>, Func<TInner, TKey>, Func<TOuter, TInner, TResult>)
