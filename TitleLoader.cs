@@ -205,7 +205,8 @@ namespace IMDB_DATABASE
 
 
             // Sort files
-            while ((lineBasic = fileBasic.ReadLine()) != null)
+            while ((lineBasic = fileBasic.ReadLine()) != null
+                && (lineRating = fileRatings.ReadLine()) != null)
             {
                 genres = new List<string>(3);
 
@@ -261,46 +262,43 @@ namespace IMDB_DATABASE
                         }
                     }
 
-                    while ((lineRating = fileRatings.ReadLine()) != null)
+                    // Ratings 
+                    splitLine2 = lineRating.Split('\t');
+
+                    if (splitLine2[0] != "tconst")
                     {
-                        splitLine2 = lineRating.Split('\t');
+                        // Title Rating params
+                        ushort numVotes;
 
-                        if (splitLine2[0] != "tconst")
-                        {
-                            // Title Rating params
-                            ushort numVotes;
+                        // Title Type
+                        float.TryParse(
+                           splitLine2[1], numberStyles, cultureInfo,
+                           out float avgRating);
 
-                            // Title Type
-                            float.TryParse(
-                               splitLine2[1], numberStyles, cultureInfo,
-                               out float avgRating);
-
-                            // Primary title
-                            numVotes = Convert.ToUInt16(splitLine2[2]);
+                        // Primary title
+                        numVotes = Convert.ToUInt16(splitLine2[2]);
 
 
-                            // Instatiate title
-                            TitleBasic title = new TitleBasic(id, type,
-                            primTitle, origiTitle,
-                            isAdult, startYear,
-                            endYear, runTime, genres, avgRating, numVotes);
+                        // Instatiate title
+                        TitleBasic title = new TitleBasic(id, type,
+                        primTitle, origiTitle,
+                        isAdult, startYear,
+                        endYear, runTime, genres, avgRating, numVotes);
 
-                            // Add the title to the collection
-                            titles.Add(title);
+                        // Add the title to the collection
+                        titles.Add(title);
 
-                            // Debug
-                            Console.WriteLine($"{title.PrimTitle} R:" +
-                                $" {title.AvgRating}");
+                        // Debug
+                        Console.WriteLine($"{title.PrimTitle} R:" +
+                            $" {title.AvgRating}");
 
-                            debug++;
-                            if (debug > 50)
-                            {
-                                break;
-                            }
-                            // ****
-                        }
+                        //debug++;
+                        //if (debug > 50)
+                        //{
+                        //    break;
+                        //}
+                        // ****
                     }
-
                 }
             }
 
