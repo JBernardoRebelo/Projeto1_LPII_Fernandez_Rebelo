@@ -445,8 +445,8 @@ namespace IMDB_DATABASE
             //{
             IEnumerable<TitleBasic> results =
                 from title in _titlesBasic.OfType<TitleBasic>()
-                where title.PrimTitle.Contains(_searchedTitle)
-                where title.Genres.Contains(genre)
+                where title.PrimTitle.Contains(_searchedTitle) && 
+                title.Genres.Contains(genre)
                 select title;
             //}
             //else
