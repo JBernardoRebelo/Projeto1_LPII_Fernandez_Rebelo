@@ -78,8 +78,10 @@ namespace IMDB_DATABASE
             _searchedTitle = default;
 
             // Load titles to collection
-            _titlesBasic = _titleLoader.LoadTitlesBasic(fileBasic);
-            _titlesRating = _titleLoader.LoadTitlesRating(fileRating);
+            //_titlesBasic = _titleLoader.LoadTitlesBasic(fileBasic);
+            //_titlesRating = _titleLoader.LoadTitlesRating(fileRating);
+
+            _titlesBasic = _titleLoader.LoadTitles(fileBasic, fileRating);
 
             // Instatiate List<T>
             //_titles = new List<ITitle>(_titlesBasic.Count());
