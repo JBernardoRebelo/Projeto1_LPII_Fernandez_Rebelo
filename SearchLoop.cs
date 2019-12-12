@@ -210,6 +210,8 @@ namespace IMDB_DATABASE
         {
             // This must pause every 20 iterations
             _searchIndex = 0;
+            int shownResults = 0;
+            int resultCount;
 
             // Query result colection
             IEnumerable<TitleBasic> results =
@@ -217,23 +219,35 @@ namespace IMDB_DATABASE
                 where title.PrimTitle.Contains(name)
                 select title;
 
-            while (!_endSearch)
+            resultCount = results.Count();
+
+            _render.GeneralSearchGUI();
+
+            foreach (TitleBasic tb in results)
             {
-                _render.GeneralSearchGUI();
+                _render.ShowGeneralTitlesSearch(tb);
 
-                foreach (TitleBasic tb in results)
+                ++shownResults;
+
+                ++_searchIndex;
+
+                if (_searchIndex >= 20)
                 {
-                    _render.ShowTitles(tb);
+                    GeneralFilterOptions();
+                    Console.Clear();
+                    _searchIndex = 0;
+                    _render.GeneralSearchGUI();
+                }
 
-                    ++_searchIndex;
+                if (_endSearch)
+                {
+                    _endSearch = false;
+                    break;
+                }
 
-                    if (_searchIndex >= 20)
-                    {
-                        GeneralFilterOptions();
-                        Console.Clear();
-                        _searchIndex = 0;
-                        _render.GeneralSearchGUI();
-                    }
+                if (shownResults == resultCount)
+                {
+                    _render.EndOfSearchResultsWarning();
                 }
             }
         }
@@ -373,34 +387,54 @@ namespace IMDB_DATABASE
             if (ushort.TryParse(Console.ReadLine(), out ushort date))
             {
                 int i = 0;
+                int shownResults = 0;
+                int resultCount;
 
-                IEnumerable<TitleBasic> results =
-                    (from title in _titlesBasic.OfType<TitleBasic>()
-                     where title.PrimTitle.Contains(_searchedTitle)
-                     where title.StartYear.Equals(date)
-                     select title).OrderBy(title => title.StartYear);
+                IEnumerable<TitleBasic> dateResults =
+                    from title in _titlesBasic.OfType<TitleBasic>()
+                    where title.PrimTitle.Contains(_searchedTitle) &&
+                    title.StartYear.Equals(date)
+                    select title;
 
-                while (!_endSearch)
+                resultCount = dateResults.Count();
+
+                if (resultCount == 0)
+                {
+                    _render.FilterErrorMessage();
+                }
+
+                else
                 {
                     _render.GeneralSearchGUI();
 
-                    foreach (TitleBasic t in results)
+                    foreach (TitleBasic t in dateResults)
                     {
                         ++i;
-                        _render.ShowTitles(t);
+                        ++shownResults;
+
+                        _render.ShowGeneralTitlesSearch(t);
+
                         if (i >= 20)
                         {
-                            SpecificFilterOptions();
+                            //SpecificFilterOptions();
+                            Console.ReadKey(false);
                             Console.Clear();
                             i = 0;
                             _render.GeneralSearchGUI();
                         }
+
+                        if (_endSearch)
+                        {
+                            _endSearch = false;
+                            break;
+                        }
+
+                        if (shownResults == resultCount)
+                        {
+                            _render.EndOfDateSearchResultsWarning();
+                        }
                     }
                 }
-            }
-            else
-            {
-                _render.FilterErrorMessage();
             }
         }
 
@@ -419,7 +453,7 @@ namespace IMDB_DATABASE
             //{
             //    _render.FilterErrorMessage();
             //}
-        } 
+        }
         #endregion
 
         /// <summary>
