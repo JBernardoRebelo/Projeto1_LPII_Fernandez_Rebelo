@@ -7,7 +7,7 @@ namespace IMDB_DATABASE
     /// <summary>
     /// Class that handles file decompression
     /// </summary>
-    public static class FileHandler
+    public class FileHandler
     {
         // Class consts
         /// <summary>
@@ -26,10 +26,10 @@ namespace IMDB_DATABASE
         private const string fileTitleRatings = "title.ratings.tsv.gz";
 
         /// <summary>
-        /// Static method to decompress basic information file.
+        /// Method to decompress basic information file.
         /// </summary>
         /// <returns> Decompressed basic title file. </returns>
-        public static StreamReader MakeReadableBasics()
+        public StreamReader MakeReadableBasics()
         {
             string folderWithFiles
                 = Path.Combine(Environment.GetFolderPath
@@ -50,10 +50,10 @@ namespace IMDB_DATABASE
         }
 
         /// <summary>
-        /// Static method to decompress ratings file.
+        /// Method to decompress ratings file.
         /// </summary>
         /// <returns> Decompressed title ratings file. </returns>
-        public static StreamReader MakeReadableRatings()
+        public StreamReader MakeReadableRatings()
         {
             // Access needed folder
             string folderWithFiles
