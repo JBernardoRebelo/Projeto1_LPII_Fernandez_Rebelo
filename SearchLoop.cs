@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace IMDB_DATABASE
 {
@@ -10,7 +10,17 @@ namespace IMDB_DATABASE
     /// </summary>
     public class SearchLoop
     {
-        // Class variables
+        #region Class variables
+        /// <summary>
+        /// Variable to be used as a index indentifier within a search
+        /// </summary>
+        private int _searchIndex;
+
+        /// <summary>
+        /// Bool to check if user wants end current search.
+        /// </summary>
+        private bool _endSearch;
+
         /// <summary>
         /// Variable to store user input.
         /// </summary>
@@ -22,16 +32,15 @@ namespace IMDB_DATABASE
         private string _searchedTitle;
 
         /// <summary>
-        /// Variable to be used as a index indentifier within a search
-        /// </summary>
-        private int _searchIndex;
-
-        private bool _endSearch;
-
-        /// <summary>
         /// Instance of the Render class where all output messages exist
         /// </summary>
         private readonly Render _render;
+
+        /// <summary>
+        /// Instance of the TitleLoader class to instantiate titles from files
+        /// to be stored in a collection.
+        /// </summary>
+        private readonly TitleLoader _titleLoader;
 
         /// <summary>
         /// Collection that contains basic title info
@@ -47,7 +56,8 @@ namespace IMDB_DATABASE
         /// Collection that contains all information from
         /// other title collections
         /// </summary>
-        private readonly ICollection<ITitle> _titles;
+        //private readonly ICollection<ITitle> _titles; 
+        #endregion
 
         /// <summary>
         /// Constructor to initiate the search loop
@@ -61,29 +71,25 @@ namespace IMDB_DATABASE
         public SearchLoop(StreamReader fileBasic, StreamReader fileRating)
         {
             _render = new Render();
+            _titleLoader = new TitleLoader();
             _uInput = default;
             _endSearch = false;
             _searchIndex = default;
             _searchedTitle = default;
 
             // Load titles to collection
-            _titlesBasic = TitleLoader.LoadTitlesBasic(fileBasic);
-            _titlesRating = TitleLoader.LoadTitlesRating(fileRating);
+            _titlesBasic = _titleLoader.LoadTitlesBasic(fileBasic);
+            _titlesRating = _titleLoader.LoadTitlesRating(fileRating);
 
-            //// Check if there are duplicates
-            //_titles = _titlesBasic.GroupBy(
-            //    i => i.ID).Select(t => t.First()).ToList();
+            // Instatiate List<T>
+            //_titles = new List<ITitle>(_titlesBasic.Count());
 
-            //// Check if 
-            //foreach (ITitle rating in _titlesRating)
-            //{
-            //    if (_titles.Where(x => x.ID == rating.ID).Count() == 0)
-            //    {
-            //        _titles.Add(rating);
-            //    }
-            //}
+            // INSERT JOIN METHOD TO HAVE A COLLECTION WITH COMPLETE TITLES
+            // INFORMATION ?!?!? OR CREATE IT IN TITLELOADER CLASS ?!?!?
+
         }
 
+        #region Initial Search Methods
         /// <summary>
         /// Main method where the search loop begins
         /// </summary>
@@ -104,7 +110,7 @@ namespace IMDB_DATABASE
 
         /// <summary>
         /// Method where the type of search to be done in the database
-        /// is chosen
+        /// is chosen.
         /// </summary>
         private void TypeOfSearch()
         {
@@ -143,7 +149,9 @@ namespace IMDB_DATABASE
 
             } while (_uInput != "t" && _uInput != "q");
         }
+        #endregion
 
+        #region General search methods
         /// <summary>
         /// Method where user inputs title name to be searched for.
         /// After input, it is shown the results. Calls ShowSearchTitle()
@@ -165,7 +173,9 @@ namespace IMDB_DATABASE
         }
 
         /// <summary>
-        /// Method to get the title to be searched for. If input is invalid,
+        /// Method to get the title to be searched for and stores
+        /// a copy of the inouted title in a separate variable.
+        /// If input is invalid,
         /// calls Render's ErrorMessage() and calls Render's SearchForTitles().
         /// </summary>
         /// <returns> User title choice. </returns>
@@ -190,7 +200,6 @@ namespace IMDB_DATABASE
             return titleToSearch;
         }
 
-
         /// <summary>
         /// Method that prints title that contain user input string
         /// </summary>
@@ -208,43 +217,35 @@ namespace IMDB_DATABASE
                 where title.PrimTitle.Contains(name)
                 select title;
 
-            while (_searchIndex < results.Count() && !_endSearch)
+            while (!_endSearch)
             {
                 _render.GeneralSearchGUI();
 
-                for (byte i = 0; i < 20 && i < results.Count(); i++)
+                foreach (TitleBasic tb in results)
                 {
+                    _render.ShowTitles(tb);
+
                     ++_searchIndex;
-                    _render.ShowTitles(results.ElementAt(_searchIndex));
+
+                    if (_searchIndex >= 20)
+                    {
+                        GeneralFilterOptions();
+                        Console.Clear();
+                        _searchIndex = 0;
+                        _render.GeneralSearchGUI();
+                    }
                 }
-
-                FilterOptions();
             }
-
-            //foreach (TitleBasic tb in results)
-            //{
-            //    _render.ShowTitles(tb);
-
-            //    //++j;
-
-            //    if (j >= 20)
-            //    {
-            //        // Wait for user input
-            //        FilterOptions();
-            //        Console.Clear();
-            //        j = 0;
-            //        _render.GeneralSearchGUI();
-            //    }
         }
 
         /// <summary>
         /// Method to show organizing options when showing titles
         /// </summary>
-        private void FilterOptions()
+        private void GeneralFilterOptions()
         {
-            _render.ShowFilterOptions();
+            _render.ShowGeneralFilterOptions();
 
-            _uInput = GetUserFilterOptions();
+            _uInput = GetUserGeneralFilterOptions();
 
             switch (_uInput)
             {
@@ -255,14 +256,21 @@ namespace IMDB_DATABASE
                     break;
 
                 case "date":
+                    _uInput = null;
+                    _render.AskForDateToFilterBy();
+                    FilterByDate();
                     break;
 
                 case "type":
+                    _uInput = null;
+                    _render.AskForTypeToFilterBy();
+
                     break;
 
                 case "genre":
+                    _uInput = null;
                     _render.AskForGenreToFilterBy();
-
+                    //FilterByGenre(/*ADD USER INPUT METHOD*/);
                     break;
 
                 case "back":
@@ -282,7 +290,7 @@ namespace IMDB_DATABASE
         /// or none and keep showing other titles
         /// </summary>
         /// <returns> String with selected user choice. </returns>
-        private string GetUserFilterOptions()
+        private string GetUserGeneralFilterOptions()
         {
             string filterOption;
 
@@ -293,6 +301,39 @@ namespace IMDB_DATABASE
             } while (filterOption != "" && filterOption != "detail" &&
                      filterOption != "date" && filterOption != "type" &&
                      filterOption != "genre" && filterOption != "back");
+
+            return filterOption;
+        }
+        #endregion
+
+        #region Specific search methods
+        /// <summary>
+        /// Method to show user options when within a filtered search
+        /// </summary>
+        private void SpecificFilterOptions()
+        {
+            // Pseudo copy of GeneralFilterOptions
+
+            _render.ShowSpecificFilterOptions();
+
+            _uInput = GetUserSpecificFilterOptions();
+
+            switch (_uInput)
+            {
+                default:
+                    break;
+            }
+        }
+
+        private string GetUserSpecificFilterOptions()
+        {
+            string filterOption;
+
+            do
+            {
+                filterOption = Console.ReadLine().ToLower();
+
+            } while (filterOption != "" && filterOption != "back");
 
             return filterOption;
         }
@@ -310,7 +351,7 @@ namespace IMDB_DATABASE
             {
                 chosenTitle = Console.ReadLine().ToLower();
 
-            } while (chosenTitle == null);
+            } while (chosenTitle == "");
 
             return chosenTitle;
         }
@@ -323,6 +364,63 @@ namespace IMDB_DATABASE
         {
             // FAZER AMANHA (11/12), PRIMEIRO DESPACHAR MENUS E ORGANIZAÇÃO
         }
+
+        /// <summary>
+        /// Method to filter search by specific release date.
+        /// </summary>
+        private void FilterByDate()
+        {
+            if (ushort.TryParse(Console.ReadLine(), out ushort date))
+            {
+                int i = 0;
+
+                IEnumerable<TitleBasic> results =
+                    (from title in _titlesBasic.OfType<TitleBasic>()
+                     where title.PrimTitle.Contains(_searchedTitle)
+                     where title.StartYear.Equals(date)
+                     select title).OrderBy(title => title.StartYear);
+
+                while (!_endSearch)
+                {
+                    _render.GeneralSearchGUI();
+
+                    foreach (TitleBasic t in results)
+                    {
+                        ++i;
+                        _render.ShowTitles(t);
+                        if (i >= 20)
+                        {
+                            SpecificFilterOptions();
+                            Console.Clear();
+                            i = 0;
+                            _render.GeneralSearchGUI();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                _render.FilterErrorMessage();
+            }
+        }
+
+        private void FilterByGenre(string genre)
+        {
+
+            //if
+            //{
+            IEnumerable<TitleBasic> results =
+                from title in _titlesBasic.OfType<TitleBasic>()
+                where title.PrimTitle.Contains(_searchedTitle)
+                where title.Genres.Contains(genre)
+                select title;
+            //}
+            //else
+            //{
+            //    _render.FilterErrorMessage();
+            //}
+        } 
+        #endregion
 
         /// <summary>
         /// Method to quit the program

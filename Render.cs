@@ -58,23 +58,40 @@ namespace IMDB_DATABASE
         /// <summary>
         /// Method to show user possible filter options
         /// </summary>
-        public void ShowFilterOptions()
+        public void ShowGeneralFilterOptions()
         {
             Console.WriteLine("\nPress any key to see the next 20 results\n" +
                 "Write detail see detailed info for a title,\n" +
                 "Write date to see titles organized by date\n" +
                 "Write genre to see title with a specific genre.\n" +
+                "Write type to see title with a specific genre.\n" +
                 "Write back to return to previous menu.");
+        }
+
+        /// <summary>
+        /// Method to show user options within a filtered search
+        /// </summary>
+        public void ShowSpecificFilterOptions()
+        {
+
         }
 
         public void AskForDateToFilterBy()
         {
-
+            Console.Write("Please write the date you want to filter the" +
+                "search by: ");
         }
 
         public void AskForGenreToFilterBy()
         {
+            Console.Write("Please write the genre you want to filter the" +
+                "search by: ");
+        }
 
+        public void AskForTypeToFilterBy()
+        {
+            Console.Write("Please write the type you want to filter the" +
+                "search by: ");
         }
 
         public void AskForTitleToDetail()
@@ -111,6 +128,9 @@ namespace IMDB_DATABASE
                     break;
                 }
             }
+            Console.WriteLine($"---------------------------------------\n");
+
+            Console.ReadKey(true);
         }
 
         /// <summary>
@@ -120,6 +140,14 @@ namespace IMDB_DATABASE
         {
             Console.WriteLine("\n" +
                 "Invalid input. Press any key to try again...");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        public void FilterErrorMessage()
+        {
+            Console.WriteLine(
+                "Couldn't filter titles with inputed information...");
             Console.ReadKey();
             Console.Clear();
         }
