@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Globalization;
 using System.Collections.Generic;
 
@@ -8,7 +9,7 @@ namespace IMDB_DATABASE
     /// <summary>
     /// Class to instantiate titles and store them in Collections
     /// </summary>
-    public static class TitleLoader
+    public class TitleLoader
     {
         /// <summary>
         /// Instantiates basic titles in a file
@@ -16,7 +17,7 @@ namespace IMDB_DATABASE
         /// <param name="filename"> Accepts a file name. </param>
         /// <returns> Returns an ICollection of ITitle title basic info. 
         /// </returns>
-        public static ICollection<ITitle> LoadTitlesBasic(StreamReader file)
+        public ICollection<ITitle> LoadTitlesBasic(StreamReader file)
         {
             // List of titlesBasic
             List<ITitle> titlesBasic = new List<ITitle>();
@@ -116,7 +117,7 @@ namespace IMDB_DATABASE
         /// </summary>
         /// <param name="file"> Accepts a file name. </param>
         /// <returns> Returns an ICollection of ITitle title ratings. </returns>
-        public static ICollection<ITitle> LoadTitlesRating(StreamReader file)
+        public ICollection<ITitle> LoadTitlesRating(StreamReader file)
         {
 
             NumberStyles numberStyles = NumberStyles.Any;
@@ -164,5 +165,27 @@ namespace IMDB_DATABASE
             // Returns the collection
             return titlesRating;
         }
+
+        // CREATE METH(HEAD)OD TO COMBINE COLLECTIONS
+
+        //public ICollection<ITitle> CombineTitleCollections(
+        //    ICollection<ITitle> basic, ICollection<ITitle> rating)
+        //{
+        //    rating.Join(basic,
+        //                title => title,
+                         
+        //                (fullTitle, rate) =>
+        //            new { fullTit = person.Name, Pet = pet.Name });
+
+        //    foreach (var obj in query)
+        //    {
+        //        Console.WriteLine(
+        //            "{0} - {1}",
+        //            obj.OwnerName,
+        //            obj.Pet);
+        //    }
+        //}
+
+        //Join(IEnumerable<TOuter>, IEnumerable<TInner>, Func<TOuter, TKey>, Func<TInner, TKey>, Func<TOuter, TInner, TResult>)
     }
 }
