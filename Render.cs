@@ -14,11 +14,13 @@ namespace IMDB_DATABASE
         /// </summary>
         public void Greetings()
         {
+            // Guarantee console is clear when using this message
+            Console.Clear();
+
             // REVIEW USER MESSAGES
             Console.WriteLine("Welcome to a console-based IMDB database. \n" +
                         "Please select the type of search you want to do: \n");
             Console.WriteLine("To search for a title press t; \n" +
-                              "To search for a actor/actress press a; \n" +
                               "To quit the program press q.");
         }
 
@@ -38,6 +40,8 @@ namespace IMDB_DATABASE
         /// </summary>
         public void GeneralSearchGUI()
         {
+            Console.Clear();
+
             // Formated string that shows search categories
             Console.WriteLine($"{"Type",-20} {"Title",-60}" +
                 $"{"Release date",-20}\n");
@@ -47,10 +51,10 @@ namespace IMDB_DATABASE
         /// Method to print title information for general search.
         /// </summary>
         /// <param name="tb"> TitleBasic instance. </param>
-        public void ShowTitles(TitleBasic tb)
+        public void ShowGeneralTitlesSearch(TitleBasic tb)
         {
             // Format output information
-            Console.Write($"\n{tb.Type,-15}" +
+            Console.WriteLine($"{tb.Type,-15}" +
                 $"{tb.PrimTitle,-70} " +
                 $"{tb.StartYear,-20}");
         }
@@ -60,7 +64,10 @@ namespace IMDB_DATABASE
         /// </summary>
         public void ShowGeneralFilterOptions()
         {
-            Console.WriteLine("\nPress any key to see the next 20 results\n" +
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine(
+                "Press any key to see the next 20 results\n" +
                 "Write detail see detailed info for a title,\n" +
                 "Write date to see titles organized by date\n" +
                 "Write genre to see title with a specific genre.\n" +
@@ -130,7 +137,7 @@ namespace IMDB_DATABASE
             }
             Console.WriteLine($"---------------------------------------\n");
 
-            Console.ReadKey(true);
+            Console.ReadKey(false);
         }
 
         /// <summary>
@@ -138,18 +145,38 @@ namespace IMDB_DATABASE
         /// </summary>
         public void ErrorMessage()
         {
-            Console.WriteLine("\n" +
-                "Invalid input. Press any key to try again...");
-            Console.ReadKey();
+            Console.WriteLine();
+            Console.WriteLine("Invalid input. Press any key to try again...");
+            Console.ReadKey(false);
             Console.Clear();
         }
 
         public void FilterErrorMessage()
         {
+            Console.WriteLine();
             Console.WriteLine(
                 "Couldn't filter titles with inputed information...");
-            Console.ReadKey();
+            Console.ReadKey(false);
             Console.Clear();
+        }
+
+        public void EndOfSearchResultsWarning()
+        {
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("There are no more results for the exact title" +
+                " you entered... Press any key to return to the main menu...");
+            Console.ReadKey(false);
+        }
+
+        public void EndOfDateSearchResultsWarning()
+        {
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("There are no more results for the exact date" +
+                " you entered... Press any key to return to the general" +
+                " search results...");
+            Console.ReadKey(false);
         }
 
         /// <summary>
