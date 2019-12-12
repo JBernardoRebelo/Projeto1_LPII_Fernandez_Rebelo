@@ -265,7 +265,7 @@ namespace IMDB_DATABASE
                     {
                         splitLine2 = lineRating.Split('\t');
 
-                        if (splitLine[0] != "tconst")
+                        if (splitLine2[0] != "tconst")
                         {
                             // Title Rating params
                             ushort numVotes;
@@ -275,7 +275,6 @@ namespace IMDB_DATABASE
                                splitLine2[1], numberStyles, cultureInfo,
                                out float avgRating);
 
-                            Console.WriteLine($"{primTitle}");
                             // Primary title
                             numVotes = Convert.ToUInt16(splitLine2[2]);
 
