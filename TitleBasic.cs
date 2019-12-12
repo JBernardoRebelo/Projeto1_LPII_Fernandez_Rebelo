@@ -52,6 +52,17 @@ namespace IMDB_DATABASE
         /// </summary>
         public ICollection<string> Genres { get; }
 
+
+        /// <summary>
+        /// Average Rating of title - averageRating
+        /// </summary>
+        public float AvgRating { get;}
+
+        /// <summary>
+        /// Number of votes - numVotes
+        /// </summary>
+        public ushort NumVotes { get;}
+
         /// <summary>
         /// Constructor that uses params to set values to all properties.
         /// </summary>
@@ -65,11 +76,14 @@ namespace IMDB_DATABASE
         /// </param>
         /// <param name="runTime"> Title's length. </param>
         /// <param name="genres"> Title's genre/genres. </param>
+        /// 
+        ///
+        ///
         public TitleBasic(string id, string type,
             string primTitle, string origiTitle,
             bool isAdult, ushort startYear,
             ushort endYear, ushort runTime,
-            ICollection<string> genres)
+            ICollection<string> genres, float avgRat, ushort numVotes)
         {
             ID = id;
             Type = type;
@@ -80,6 +94,10 @@ namespace IMDB_DATABASE
             EndYear = endYear;
             RunTimeMin = runTime;
             Genres = genres;
+
+            // Fase 2
+            AvgRating = avgRat;
+            NumVotes = numVotes;
         }
     }
 }
