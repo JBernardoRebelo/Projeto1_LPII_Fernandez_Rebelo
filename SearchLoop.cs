@@ -45,18 +45,7 @@ namespace IMDB_DATABASE
         /// <summary>
         /// Collection that contains basic title info
         /// </summary>
-        private readonly ICollection<ITitle> _titlesBasic;
-
-        /// <summary>
-        /// Collection that contains title ratings
-        /// </summary>
-        private readonly ICollection<ITitle> _titlesRating;
-
-        /// <summary>
-        /// Collection that contains all information from
-        /// other title collections
-        /// </summary>
-        //private readonly ICollection<ITitle> _titles; 
+        private readonly ICollection<ITitle> _titles;
         #endregion
 
         /// <summary>
@@ -78,17 +67,7 @@ namespace IMDB_DATABASE
             _searchedTitle = default;
 
             // Load titles to collection
-            //_titlesBasic = _titleLoader.LoadTitlesBasic(fileBasic);
-            //_titlesRating = _titleLoader.LoadTitlesRating(fileRating);
-
-            _titlesBasic = _titleLoader.LoadTitles(fileBasic, fileRating);
-
-            // Instatiate List<T>
-            //_titles = new List<ITitle>(_titlesBasic.Count());
-
-            // INSERT JOIN METHOD TO HAVE A COLLECTION WITH COMPLETE TITLES
-            // INFORMATION ?!?!? OR CREATE IT IN TITLELOADER CLASS ?!?!?
-
+            _titles = _titleLoader.LoadTitles(fileBasic, fileRating);
         }
 
         #region Initial Search Methods
@@ -215,7 +194,7 @@ namespace IMDB_DATABASE
 
             // Query result colection
             IEnumerable<TitleBasic> results =
-                from title in _titlesBasic.OfType<TitleBasic>()
+                from title in _titles.OfType<TitleBasic>()
                 where title.PrimTitle.Contains(name)
                 select title;
 
@@ -377,7 +356,7 @@ namespace IMDB_DATABASE
                 int i = 0;
 
                 IEnumerable<TitleBasic> results =
-                    (from title in _titlesBasic.OfType<TitleBasic>()
+                    (from title in _titles.OfType<TitleBasic>()
                      where title.PrimTitle.Contains(_searchedTitle)
                      where title.StartYear.Equals(date)
                      select title).OrderBy(title => title.StartYear);
@@ -412,7 +391,7 @@ namespace IMDB_DATABASE
             //if
             //{
             IEnumerable<TitleBasic> results =
-                from title in _titlesBasic.OfType<TitleBasic>()
+                from title in _titles.OfType<TitleBasic>()
                 where title.PrimTitle.Contains(_searchedTitle)
                 where title.Genres.Contains(genre)
                 select title;
