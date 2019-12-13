@@ -11,11 +11,19 @@ namespace IMDB_DATABASE
     /// </summary>
     public class TitleLoader
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fileBasic"></param>
+        /// <param name="fileRatings"></param>
+        /// <returns></returns>
         public ICollection<ITitle> LoadTitles(StreamReader fileBasic,
             StreamReader fileRatings)
         {
+            // Method variables
             NumberStyles numberStyles = NumberStyles.Any;
             CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture("en-US");
+            int ratingIndex = 0;
 
             // List of titles
             List<ITitle> titles = new List<ITitle>();
@@ -31,10 +39,6 @@ namespace IMDB_DATABASE
             ushort runTime = default;
             List<string> genres;
 
-            // Title Rating params
-            ushort numVotes = default;
-            float avgRating = default;
-
             // Line
             string lineBasic;
             string[] splitLine;
@@ -49,6 +53,7 @@ namespace IMDB_DATABASE
                 if (!lineRating.Contains("tconst"))
                 {
                     fileR.Add(lineRating);
+                    //Console.WriteLine(lineRating);
                 }
             }
 
@@ -110,24 +115,23 @@ namespace IMDB_DATABASE
                         }
                     }
 
-                    if (fileR.Any(r => r.Contains(id)))
+
+                    // Title rating params
+                    float avgRating;
+                    ushort numVotes;
+                    
+                    if (fileR.ElementAt(ratingIndex).Contains(id))
                     {
-                        // Ratings
-                        foreach (string line in fileR)
-                        {
-                            splitLine2 = line.Split('\t');
+                        splitLine2 = fileR.ElementAt(ratingIndex).Split('\t');
 
-                            if (splitLine2[0] == id)
-                            {
-                                // Title Type
-                                float.TryParse(
-                                   splitLine2[1], numberStyles, cultureInfo,
-                                   out avgRating);
+                        float.TryParse(
+                                splitLine2[1], numberStyles, cultureInfo,
+                                out avgRating);
 
-                                // Primary title
-                                numVotes = Convert.ToUInt16(splitLine2[2]);
-                            }
-                        }
+                        ushort.TryParse(splitLine2[2], numberStyles,
+                            cultureInfo, out numVotes);
+
+                        ratingIndex++;
                     }
                     else
                     {
