@@ -131,26 +131,7 @@ namespace IMDB_DATABASE
                         ushort.TryParse(splitLine2[2], numberStyles,
                             cultureInfo, out numVotes);
 
-                        //numVotes = Convert.ToUInt16();
-
                         ratingIndex++;
-
-                        //// Ratings
-                        //foreach (string line in fileR)
-                        //{
-                        //    splitLine2 = line.Split('\t');
-
-                        //    if (splitLine2[0] == id)
-                        //    {
-                        //        // Title Type
-                        //        float.TryParse(
-                        //           splitLine2[1], numberStyles, cultureInfo,
-                        //           out avgRating);
-
-                        //        // Primary title
-                        //        numVotes = Convert.ToUInt16(splitLine2[2]);
-                        //    }
-                        //}
                     }
                     else
                     {
