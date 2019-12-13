@@ -55,8 +55,9 @@ namespace IMDB_DATABASE
         {
             // Format output information
             Console.WriteLine($"{tb.Type,-15}" +
-                $"{tb.PrimTitle,-70} " +
-                $"{tb.StartYear,-20}");
+                $"{tb.PrimTitle,-70}" +
+                $"{tb.StartYear,-20}" +
+                $"{tb.AvgRating,-20}");
         }
 
         /// <summary>
