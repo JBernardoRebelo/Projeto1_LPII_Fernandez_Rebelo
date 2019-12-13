@@ -44,7 +44,7 @@ namespace IMDB_DATABASE
 
             // Formated string that shows search categories
             Console.WriteLine($"{"Type",-20} {"Title",-60}" +
-                $"{"Release date",-20}\n");
+                $"{"Release date",-20} {"Rating", -20}\n");
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace IMDB_DATABASE
             Console.WriteLine($"{tb.Type,-15}" +
                 $"{tb.PrimTitle,-70}" +
                 $"{tb.StartYear,-20}" +
-                $"{tb.AvgRating,-20}");
+                $"{tb.AvgRating,-10}");
         }
 
         /// <summary>
@@ -68,12 +68,13 @@ namespace IMDB_DATABASE
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine(
-                "Press any key to see the next 20 results\n" +
+                "Press Enter to see the next 20 results\n" +
                 "Write detail see detailed info for a title,\n" +
-                "Write date to see titles organized by date\n" +
-                "Write genre to see title with a specific genre.\n" +
-                "Write type to see title with a specific genre.\n" +
-                "Write back to return to previous menu.");
+                "Date to see titles organized by date\n" +
+                "Genre to see title with a specific genre.\n" +
+                "Type to see title with a specific genre.\n" +
+                "Rating to order by high to low or the inverse\n" +
+                "Back to return to previous menu.");
         }
 
         /// <summary>
@@ -81,31 +82,58 @@ namespace IMDB_DATABASE
         /// </summary>
         public void ShowSpecificFilterOptions()
         {
-
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine(
+                "Press any key to see the next 20 results\n" +
+                "Write detail see detailed info for a title,\n" +
+                "Or write back to return to general search.");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void AskForDateToFilterBy()
         {
             Console.Write("Please write the date you want to filter the" +
                 "search by: ");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void AskForGenreToFilterBy()
         {
             Console.Write("Please write the genre you want to filter the" +
                 "search by: ");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void AskForTypeToFilterBy()
         {
             Console.Write("Please write the type you want to filter the" +
                 "search by: ");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void AskForTitleToDetail()
         {
             Console.Write(
-                "Please input the title you want detailed information about:");
+                "Please input the complete title name you want detailed " +
+                "information about:");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void OrderByAscendingOrDescending()
+        {
+            Console.Write("Do you want to order by ascending?" +
+                "Write Y or N ?");
         }
 
         /// <summary>
@@ -152,6 +180,21 @@ namespace IMDB_DATABASE
             Console.Clear();
         }
 
+        /// <summary>
+        /// Method to warn user if no title could be found
+        /// </summary>
+        public void NoTitleFoundMessage()
+        {
+            Console.WriteLine();
+            Console.WriteLine("No titles were found... Press any key to try" +
+                " again...");
+            Console.ReadKey(false);
+            Console.Clear();
+        }
+
+        /// <summary>
+        /// Method to warn user if filter couldn't be used
+        /// </summary>
         public void FilterErrorMessage()
         {
             Console.WriteLine();
@@ -161,6 +204,9 @@ namespace IMDB_DATABASE
             Console.Clear();
         }
 
+        /// <summary>
+        /// Warns user that there are no more results to be displayed
+        /// </summary>
         public void EndOfSearchResultsWarning()
         {
             Console.WriteLine();
@@ -170,6 +216,9 @@ namespace IMDB_DATABASE
             Console.ReadKey(false);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void EndOfDateSearchResultsWarning()
         {
             Console.WriteLine();
