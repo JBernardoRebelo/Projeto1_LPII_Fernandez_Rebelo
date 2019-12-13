@@ -19,7 +19,7 @@ namespace IMDB_DATABASE
         /// <summary>
         /// Bool to check if user wants end current search.
         /// </summary>
-        private bool _endSearch;
+        private bool _endSearch, _filterSearch;
 
         /// <summary>
         /// Variable to store user input.
@@ -62,7 +62,7 @@ namespace IMDB_DATABASE
             _render = new Render();
             _titleLoader = new TitleLoader();
             _uInput = default;
-            _endSearch = false;
+            _endSearch = _filterSearch = false;
             _searchIndex = default;
             _searchedTitle = default;
 
@@ -184,10 +184,10 @@ namespace IMDB_DATABASE
         /// <summary>
         /// Method that prints title that contain user input string
         /// </summary>
-        /// <param name="name">
+        /// <param name="titleName">
         /// User input title string
         /// </param>
-        private void ShowTitlesGeneral(string name)
+        private void ShowTitlesGeneral(string titleName)
         {
             // This must pause every 20 iterations
             _searchIndex = 0;
@@ -197,38 +197,46 @@ namespace IMDB_DATABASE
             // Query result colection
             IEnumerable<TitleBasic> results =
                 from title in _titles.OfType<TitleBasic>()
-                where title.PrimTitle.Contains(name)
+                where title.PrimTitle.Contains(titleName)
                 select title;
 
             resultCount = results.Count();
 
-            _render.GeneralSearchGUI();
-
-            foreach (TitleBasic tb in results)
+            if (resultCount == 0)
             {
-                _render.ShowGeneralTitlesSearch(tb);
+                _render.NoTitleFoundMessage();
+            }
 
-                ++shownResults;
+            else
+            {
+                _render.GeneralSearchGUI();
 
-                ++_searchIndex;
-
-                if (_searchIndex >= 20)
+                foreach (TitleBasic tb in results)
                 {
-                    GeneralFilterOptions();
-                    Console.Clear();
-                    _searchIndex = 0;
-                    _render.GeneralSearchGUI();
-                }
+                    _render.ShowGeneralTitlesSearch(tb);
 
-                if (_endSearch)
-                {
-                    _endSearch = false;
-                    break;
-                }
+                    ++shownResults;
 
-                if (shownResults == resultCount)
-                {
-                    _render.EndOfSearchResultsWarning();
+                    ++_searchIndex;
+
+                    if (_searchIndex >= 20)
+                    {
+                        GeneralFilterOptions();
+                        Console.Clear();
+                        _searchIndex = 0;
+                        _render.GeneralSearchGUI();
+                    }
+
+                    if (_endSearch)
+                    {
+                        _endSearch = false;
+                        break;
+                    }
+
+                    if (shownResults == resultCount)
+                    {
+                        _render.EndOfSearchResultsWarning();
+                    }
                 }
             }
         }
@@ -244,38 +252,49 @@ namespace IMDB_DATABASE
 
             switch (_uInput)
             {
+                // Get detailled information for a title
                 case "detail":
                     _uInput = null;
                     _render.AskForTitleToDetail();
-                    ShowTitleDetails(GetTitleForDetails());
+                    ShowTitleDetails();
                     break;
 
+                // Filter search by a certain date
                 case "date":
                     _uInput = null;
                     _render.AskForDateToFilterBy();
                     FilterByDate();
                     break;
 
+                // Filter search by a certain type
                 case "type":
                     _uInput = null;
                     _render.AskForTypeToFilterBy();
-
+                    FilterByType(GetTypeToFilter());
                     break;
 
+                // Filter search by a certain genre
                 case "genre":
                     _uInput = null;
                     _render.AskForGenreToFilterBy();
-                    //FilterByGenre(/*ADD USER INPUT METHOD*/);
+                    FilterByGenre(GetGenreToFilter());
                     break;
 
+                case "rating":
+                    _uInput = null;
+                    _render.OrderByAscendingOrDescending();
+                    OrderByRating(AscendingOrder());
+                    break;
+
+                // Stop current title search
                 case "back":
                     _uInput = null;
                     _searchedTitle = null;
                     _endSearch = true;
                     break;
 
+                // If user pressed enter
                 default:
-                    Console.Clear();
                     break;
             }
         }
@@ -295,7 +314,8 @@ namespace IMDB_DATABASE
 
             } while (filterOption != "" && filterOption != "detail" &&
                      filterOption != "date" && filterOption != "type" &&
-                     filterOption != "genre" && filterOption != "back");
+                     filterOption != "genre" && filterOption != "rating" &&
+                     filterOption != "back");
 
             return filterOption;
         }
@@ -311,15 +331,31 @@ namespace IMDB_DATABASE
 
             _render.ShowSpecificFilterOptions();
 
-            _uInput = GetUserSpecificFilterOptions();
+            string filterOption = GetUserSpecificFilterOptions();
 
-            switch (_uInput)
+            switch (filterOption)
             {
+                // In case user wants details about a title
+                case "detail":
+                    _render.AskForTitleToDetail();
+                    ShowTitleDetails();
+                    break;
+
+                // Return to general title search results
+                case "back":
+                    _filterSearch = true;
+                    break;
+
+                // Continue using filter
                 default:
                     break;
             }
         }
 
+        /// <summary>
+        /// Method to options while in a filtered search
+        /// </summary>
+        /// <returns> Chosen option. </returns>
         private string GetUserSpecificFilterOptions()
         {
             string filterOption;
@@ -327,6 +363,11 @@ namespace IMDB_DATABASE
             do
             {
                 filterOption = Console.ReadLine().ToLower();
+
+                if (filterOption != "" && filterOption != "back")
+                {
+                    _render.ErrorMessage();
+                }
 
             } while (filterOption != "" && filterOption != "back");
 
@@ -344,7 +385,7 @@ namespace IMDB_DATABASE
 
             do
             {
-                chosenTitle = Console.ReadLine().ToLower();
+                chosenTitle = Console.ReadLine();
 
             } while (chosenTitle == "");
 
@@ -355,9 +396,23 @@ namespace IMDB_DATABASE
         /// Method where user chosen title details are shown.
         /// </summary>
         /// <param name="title"> Specific title to be detailed. </param>
-        private void ShowTitleDetails(string title)
+        private void ShowTitleDetails()
         {
-            // FAZER AMANHA (11/12), PRIMEIRO DESPACHAR MENUS E ORGANIZAÇÃO
+            string uTitle = GetTitleForDetails();
+
+            foreach (TitleBasic t in _titles)
+            {
+                if (t.PrimTitle.Contains(uTitle))
+                {
+                    _render.ShowDetailedInfo(t);
+                }
+
+                else
+                {
+                    _render.FilterErrorMessage();
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -365,7 +420,9 @@ namespace IMDB_DATABASE
         /// </summary>
         private void FilterByDate()
         {
-            if (ushort.TryParse(Console.ReadLine(), out ushort date))
+            string uDate = Console.ReadLine();
+
+            if (ushort.TryParse(uDate, out ushort date))
             {
                 int i = 0;
                 int shownResults = 0;
@@ -397,16 +454,267 @@ namespace IMDB_DATABASE
 
                         if (i >= 20)
                         {
-                            //SpecificFilterOptions();
+                            SpecificFilterOptions();
+                            Console.Clear();
+                            i = 0;
+                            _render.GeneralSearchGUI();
+                        }
+
+                        if (_filterSearch)
+                        {
+                            _filterSearch = false;
+                            break;
+                        }
+
+                        if (shownResults == resultCount)
+                        {
+                            _render.EndOfDateSearchResultsWarning();
+                        }
+                    }
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// Method to filter search by a certain genre.
+        /// </summary>
+        /// <param name="genre"> Genre itself.</param>
+        private void FilterByGenre(string genre)
+        {
+            int i = 0;
+            int shownResults = 0;
+            int resultCount;
+
+            IEnumerable<TitleBasic> genreResults =
+                from title in _titles.OfType<TitleBasic>()
+                where title.PrimTitle.Contains(_searchedTitle) &&
+                title.Genres.Contains(genre)
+                select title;
+
+            resultCount = genreResults.Count();
+
+            if (resultCount == 0)
+            {
+                _render.FilterErrorMessage();
+            }
+
+            else
+            {
+                _render.GeneralSearchGUI();
+
+                foreach (TitleBasic t in genreResults)
+                {
+                    ++i;
+                    ++shownResults;
+
+                    _render.ShowGeneralTitlesSearch(t);
+
+                    if (i >= 20)
+                    {
+                        SpecificFilterOptions();
+                        Console.Clear();
+                        i = 0;
+                        _render.GeneralSearchGUI();
+                    }
+
+                    if (_filterSearch)
+                    {
+                        _filterSearch = false;
+                        break;
+                    }
+
+                    if (shownResults == resultCount)
+                    {
+                        _render.EndOfDateSearchResultsWarning();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Method to get user chosen genre to filter by
+        /// </summary>
+        /// <returns> String of selected genre. </returns>
+        private string GetGenreToFilter()
+        {
+            string genreToFilter;
+
+            do
+            {
+                genreToFilter = Console.ReadLine();
+
+            } while (genreToFilter == "");
+
+            return genreToFilter;
+        }
+
+        /// <summary>
+        /// Method to filter search result by type
+        /// </summary>
+        /// <param name="type"> Type to use as filter. </param>
+        private void FilterByType(string type)
+        {
+            int i = 0;
+            int shownResults = 0;
+            int resultCount;
+
+            IEnumerable<TitleBasic> typeResults =
+                from title in _titles.OfType<TitleBasic>()
+                where title.PrimTitle.Contains(_searchedTitle) &&
+                title.Genres.Contains(type)
+                select title;
+
+            resultCount = typeResults.Count();
+
+            if (resultCount == 0)
+            {
+                _render.FilterErrorMessage();
+            }
+
+            else
+            {
+                _render.GeneralSearchGUI();
+
+                foreach (TitleBasic t in typeResults)
+                {
+                    ++i;
+                    ++shownResults;
+
+                    _render.ShowGeneralTitlesSearch(t);
+
+                    if (i >= 20)
+                    {
+                        SpecificFilterOptions();
+                        Console.ReadKey(false);
+                        Console.Clear();
+                        i = 0;
+                        _render.GeneralSearchGUI();
+                    }
+
+                    if (_filterSearch)
+                    {
+                        _filterSearch = false;
+                        break;
+                    }
+
+                    if (shownResults == resultCount)
+                    {
+                        _render.EndOfDateSearchResultsWarning();
+                    }
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// Method to get user chosen type to use as filter.
+        /// </summary>
+        /// <returns> Chosen user type. </returns>
+        private string GetTypeToFilter()
+        {
+            string type;
+
+            do
+            {
+                type = Console.ReadLine();
+
+            } while (type == "");
+
+            return type;
+        }
+
+        private void OrderByRating(bool ascending)
+        {
+            int i = 0;
+            int shownResults = 0;
+            int resultCount;
+
+            if (ascending)
+            {
+                IEnumerable<TitleBasic> typeResults =
+                    (from title in _titles.OfType<TitleBasic>()
+                     where title.PrimTitle.Contains(_searchedTitle)
+                     select title).OrderBy(title => title.AvgRating);
+
+                resultCount = typeResults.Count();
+
+                if (resultCount == 0)
+                {
+                    _render.FilterErrorMessage();
+                }
+
+                else
+                {
+                    _render.GeneralSearchGUI();
+
+                    foreach (TitleBasic t in typeResults)
+                    {
+                        ++i;
+                        ++shownResults;
+
+                        _render.ShowGeneralTitlesSearch(t);
+
+                        if (i >= 20)
+                        {
+                            SpecificFilterOptions();
                             Console.ReadKey(false);
                             Console.Clear();
                             i = 0;
                             _render.GeneralSearchGUI();
                         }
 
-                        if (_endSearch)
+                        if (_filterSearch)
                         {
-                            _endSearch = false;
+                            _filterSearch = false;
+                            break;
+                        }
+
+                        if (shownResults == resultCount)
+                        {
+                            _render.EndOfDateSearchResultsWarning();
+                        }
+                    }
+
+                }
+            }
+            else
+            {
+                IEnumerable<TitleBasic> typeResults =
+                   (from title in _titles.OfType<TitleBasic>()
+                    where title.PrimTitle.Contains(_searchedTitle)
+                    select title).OrderByDescending(title => title.AvgRating);
+
+                resultCount = typeResults.Count();
+
+                if (resultCount == 0)
+                {
+                    _render.FilterErrorMessage();
+                }
+
+                else
+                {
+                    _render.GeneralSearchGUI();
+
+                    foreach (TitleBasic t in typeResults)
+                    {
+                        ++i;
+                        ++shownResults;
+
+                        _render.ShowGeneralTitlesSearch(t);
+
+                        if (i >= 20)
+                        {
+                            SpecificFilterOptions();
+                            Console.ReadKey(false);
+                            Console.Clear();
+                            i = 0;
+                            _render.GeneralSearchGUI();
+                        }
+
+                        if (_filterSearch)
+                        {
+                            _filterSearch = false;
                             break;
                         }
 
@@ -419,22 +727,27 @@ namespace IMDB_DATABASE
             }
         }
 
-        private void FilterByGenre(string genre)
+        private bool AscendingOrder()
         {
+            string order;
 
-            //if
-            //{
-            IEnumerable<TitleBasic> results =
-                from title in _titles.OfType<TitleBasic>()
-                where title.PrimTitle.Contains(_searchedTitle) && 
-                title.Genres.Contains(genre)
-                select title;
-            //}
-            //else
-            //{
-            //    _render.FilterErrorMessage();
-            //}
+            do
+            {
+                order = Console.ReadLine().ToLower();
+
+            } while (order == "");
+
+            if (order == "y")
+            {
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
         }
+
         #endregion
 
         /// <summary>
