@@ -6,20 +6,25 @@ using System.Collections.Generic;
 namespace IMDB_DATABASE
 {
     /// <summary>
-    /// Class to run the database search loop
+    /// Class to run the database search loop.
     /// </summary>
     public class SearchLoop
     {
         #region Class variables
         /// <summary>
-        /// Variable to be used as a index indentifier within a search
+        /// Variable to be used as a index indentifier within a search.
         /// </summary>
         private int _searchIndex;
 
         /// <summary>
-        /// Bool to check if user wants end current search.
+        /// Bool to check if user wants to end current search.
         /// </summary>
-        private bool _endSearch, _filterSearch;
+        private bool _endSearch, 
+		
+		///<summary>
+		///Bool to check if user wants to end filtered search.
+		///</summary>
+		private bool _filterSearch;
 
         /// <summary>
         /// Variable to store user input.
@@ -27,12 +32,12 @@ namespace IMDB_DATABASE
         private string _uInput;
 
         /// <summary>
-        /// Variable to store title that is being search for
+        /// Variable to store title that is being search for.
         /// </summary>
         private string _searchedTitle;
 
         /// <summary>
-        /// Instance of the Render class where all output messages exist
+        /// Instance of the Render class where all output messages exist.
         /// </summary>
         private readonly Render _render;
 
@@ -43,19 +48,19 @@ namespace IMDB_DATABASE
         private readonly TitleLoader _titleLoader;
 
         /// <summary>
-        /// Collection that contains basic title info
+        /// Collection that contains basic title info.
         /// </summary>
         private readonly ICollection<ITitle> _titles;
         #endregion
 
         /// <summary>
-        /// Constructor to initiate the search loop
+        /// Constructor to initiate the search loop.
         /// </summary>
         /// <param name="fileBasic"> 
-        /// File that constains basic title information
+        /// File that constains basic title information.
         /// </param>
         /// <param name="fileRating">
-        /// File that contains title rating information
+        /// File that contains title rating information.
         /// </param>
         public SearchLoop(StreamReader fileBasic, StreamReader fileRating)
         {
@@ -72,7 +77,7 @@ namespace IMDB_DATABASE
 
         #region Initial Search Methods
         /// <summary>
-        /// Main method where the search loop begins
+        /// Main method where the search loop begins.
         /// </summary>
         public void BeginSearch()
         {
@@ -615,7 +620,10 @@ namespace IMDB_DATABASE
 
             return type;
         }
-
+		
+		///<summary>
+		/// Method to order search results by rating
+		///</summary>
         private void OrderByRating(bool ascending)
         {
             int i = 0;
@@ -716,7 +724,11 @@ namespace IMDB_DATABASE
                 }
             }
         }
-
+		///<summary>
+		/// Method to define if when filtering by rating, the results
+		/// are shown in ascending order or not.
+		///</summary>
+		///<returns> True if user inputs char 'y'</returns>
         private bool AscendingOrder()
         {
             string order;
