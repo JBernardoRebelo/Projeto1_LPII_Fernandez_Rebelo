@@ -3,14 +3,13 @@
     /// <summary>
     /// Interface to be extended in diferent
     /// Types of Titles (basic, rating, etc)
+    /// to ensure every title has an ID and can be used.
     /// </summary>
-    public interface ITitle // Should this implement IEqualityComparer<T>?!?!?
+    public interface ITitle
     {
         /// <summary>
         /// ID - tconst
         /// </summary>
         string ID { get; }
-
-        // SHOULD MORE PROPERTIES BE INLCUDED? TO CREATE A TITLE WITH COMPLETE INFO?????
     }
 }

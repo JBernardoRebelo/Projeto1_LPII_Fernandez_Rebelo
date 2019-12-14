@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace IMDB_DATABASE
 {
+    /// <summary>
+    /// Struct for title ratings
+    /// </summary>
     public struct TitleRating : ITitle
     {
         /// <summary>

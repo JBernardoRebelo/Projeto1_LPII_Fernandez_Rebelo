@@ -61,7 +61,7 @@ namespace IMDB_DATABASE
         }
 
         /// <summary>
-        /// Method to show user possible filter options
+        /// Method to show user possible filter options.
         /// </summary>
         public void ShowGeneralFilterOptions()
         {
@@ -78,7 +78,7 @@ namespace IMDB_DATABASE
         }
 
         /// <summary>
-        /// Method to show user options within a filtered search
+        /// Method to show user options within a filtered search.
         /// </summary>
         public void ShowSpecificFilterOptions()
         {
@@ -91,7 +91,7 @@ namespace IMDB_DATABASE
         }
 
         /// <summary>
-        /// 
+        /// Method to ask user for a date to filter by.
         /// </summary>
         public void AskForDateToFilterBy()
         {
@@ -100,7 +100,7 @@ namespace IMDB_DATABASE
         }
 
         /// <summary>
-        /// 
+        /// Method to ask user for a genre to filter by.
         /// </summary>
         public void AskForGenreToFilterBy()
         {
@@ -109,7 +109,7 @@ namespace IMDB_DATABASE
         }
 
         /// <summary>
-        /// 
+        /// Method to ask user for a type to filter by.
         /// </summary>
         public void AskForTypeToFilterBy()
         {
@@ -118,22 +118,23 @@ namespace IMDB_DATABASE
         }
 
         /// <summary>
-        /// 
+        /// Method to ask user for a Title to filter by.
         /// </summary>
         public void AskForTitleToDetail()
         {
             Console.Write(
                 "Please input the complete title name you want detailed " +
-                "information about:");
+                "information about: ");
         }
 
         /// <summary>
-        /// 
+        /// Method to ask the user if he/she wants to order search results
+        /// by ascending rating order or not.
         /// </summary>
         public void OrderByAscendingOrDescending()
         {
             Console.Write("Do you want to order by ascending?" +
-                "Write Y or N ?");
+                "Write Y or N ? ");
         }
 
         /// <summary>
@@ -217,13 +218,15 @@ namespace IMDB_DATABASE
         }
 
         /// <summary>
-        /// 
+        /// Warns user that there are no more date filter 
+        /// results to be displayed
         /// </summary>
-        public void EndOfDateSearchResultsWarning()
+        public void EndOfFilterSearchResultsWarning()
         {
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("There are no more results for the exact date" +
+            Console.WriteLine(
+                "There are no more results for the exact filter" +
                 " you entered... Press any key to return to the general" +
                 " search results...");
             Console.ReadKey(false);
@@ -237,14 +240,5 @@ namespace IMDB_DATABASE
             Console.Clear();
             Console.WriteLine("Thank you for using the program!");
         }
-
-        // DEBUG METHOD *******************************************************
-        public void ShowRAMUsage()
-        {
-            Console.WriteLine("My app is occupying "
-            + (Process.GetCurrentProcess().VirtualMemorySize64 / 1024 / 1024)
-            + " megabytes of memory");
-        }
-        // END DEBUG METHOD ***************************************************
     }
 }
