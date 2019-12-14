@@ -80,10 +80,6 @@ namespace IMDB_DATABASE
             {
                 _render.Greetings();
 
-                // DEBUG METHOD **********************************************
-                _render.ShowRAMUsage();
-                // END DEBUG *************************************************
-
                 UserSearchOption();
                 TypeOfSearch();
             }
@@ -395,7 +391,6 @@ namespace IMDB_DATABASE
         /// <summary>
         /// Method where user chosen title details are shown.
         /// </summary>
-        /// <param name="title"> Specific title to be detailed. </param>
         private void ShowTitleDetails()
         {
             string uTitle = GetTitleForDetails();
@@ -471,7 +466,7 @@ namespace IMDB_DATABASE
 
                         if (shownResults == resultCount)
                         {
-                            _render.EndOfDateSearchResultsWarning();
+                            _render.EndOfFilterSearchResultsWarning();
                         }
                     }
 
@@ -528,7 +523,7 @@ namespace IMDB_DATABASE
 
                     if (shownResults == resultCount)
                     {
-                        _render.EndOfDateSearchResultsWarning();
+                        _render.EndOfFilterSearchResultsWarning();
                     }
                 }
             }
@@ -581,7 +576,6 @@ namespace IMDB_DATABASE
                     if (i >= 20)
                     {
                         SpecificFilterOptions();
-                        Console.ReadKey(false);
                         Console.Clear();
                         i = 0;
                         _render.GeneralSearchGUI();
@@ -595,7 +589,7 @@ namespace IMDB_DATABASE
 
                     if (shownResults == typeResults.Count())
                     {
-                        _render.EndOfDateSearchResultsWarning();
+                        _render.EndOfFilterSearchResultsWarning();
                     }
                 }
             }
@@ -656,7 +650,6 @@ namespace IMDB_DATABASE
                         if (i >= 20)
                         {
                             SpecificFilterOptions();
-                            Console.ReadKey(false);
                             Console.Clear();
                             i = 0;
                             _render.GeneralSearchGUI();
@@ -670,7 +663,7 @@ namespace IMDB_DATABASE
 
                         if (shownResults == resultCount)
                         {
-                            _render.EndOfDateSearchResultsWarning();
+                            _render.EndOfFilterSearchResultsWarning();
                         }
                     }
 
@@ -704,7 +697,6 @@ namespace IMDB_DATABASE
                         if (i >= 20)
                         {
                             SpecificFilterOptions();
-                            Console.ReadKey(false);
                             Console.Clear();
                             i = 0;
                             _render.GeneralSearchGUI();
@@ -718,7 +710,7 @@ namespace IMDB_DATABASE
 
                         if (shownResults == resultCount)
                         {
-                            _render.EndOfDateSearchResultsWarning();
+                            _render.EndOfFilterSearchResultsWarning();
                         }
                     }
                 }

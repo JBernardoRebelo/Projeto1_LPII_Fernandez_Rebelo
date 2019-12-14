@@ -3,7 +3,7 @@
 namespace IMDB_DATABASE
 {
     /// <summary>
-    /// Class for basic Title File
+    /// Struct for basic Title File
     /// </summary>
     public struct TitleBasic : ITitle
     {
@@ -52,7 +52,6 @@ namespace IMDB_DATABASE
         /// </summary>
         public ICollection<string> Genres { get; }
 
-
         /// <summary>
         /// Average Rating of title - averageRating
         /// </summary>
@@ -76,9 +75,9 @@ namespace IMDB_DATABASE
         /// </param>
         /// <param name="runTime"> Title's length. </param>
         /// <param name="genres"> Title's genre/genres. </param>
-        /// 
-        ///
-        ///
+        /// <param name="avgRat"> Title's rating. </param>
+        /// <param name="numVotes"> Title's numeber of voter for
+        /// title's rating. </param>
         public TitleBasic(string id, string type,
             string primTitle, string origiTitle,
             bool isAdult, ushort startYear,

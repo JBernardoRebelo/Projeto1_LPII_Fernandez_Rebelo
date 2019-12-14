@@ -12,11 +12,12 @@ namespace IMDB_DATABASE
     public class TitleLoader
     {
         /// <summary>
-        /// 
+        /// Method to load read files into a single collection to be used as
+        /// a database.
         /// </summary>
-        /// <param name="fileBasic"></param>
-        /// <param name="fileRatings"></param>
-        /// <returns></returns>
+        /// <param name="fileBasic"> Basic title information file. </param>
+        /// <param name="fileRatings"> Title rating information file. </param>
+        /// <returns> A collection o title and their informations. </returns>
         public ICollection<ITitle> LoadTitles(StreamReader fileBasic,
             StreamReader fileRatings)
         {
