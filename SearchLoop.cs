@@ -399,19 +399,23 @@ namespace IMDB_DATABASE
         private void ShowTitleDetails()
         {
             string uTitle = GetTitleForDetails();
+            bool found = false;
 
+            // Check wich titles have the name the user is looking for
             foreach (TitleBasic t in _titles)
             {
-                if (t.PrimTitle.Contains(uTitle))
+                if (t.PrimTitle == uTitle)
                 {
+                    // Show detailed info, sets found to true
                     _render.ShowDetailedInfo(t);
-                }
-
-                else
-                {
-                    _render.FilterErrorMessage();
+                    found = true;
                     break;
                 }
+            }
+            if(found == false)
+            {
+                // When the input doens't match a title output error
+                _render.NoTitleFoundMessage();
             }
         }
 
@@ -440,7 +444,6 @@ namespace IMDB_DATABASE
                 {
                     _render.FilterErrorMessage();
                 }
-
                 else
                 {
                     _render.GeneralSearchGUI();
@@ -498,7 +501,6 @@ namespace IMDB_DATABASE
             {
                 _render.FilterErrorMessage();
             }
-
             else
             {
                 _render.GeneralSearchGUI();
@@ -557,23 +559,16 @@ namespace IMDB_DATABASE
         {
             int i = 0;
             int shownResults = 0;
-            int resultCount;
 
             IEnumerable<TitleBasic> typeResults =
                 from title in _titles.OfType<TitleBasic>()
-                where title.PrimTitle.Contains(_searchedTitle) &&
-                title.Genres.Contains(type)
+                where title.PrimTitle.Contains(_searchedTitle)
+                && title.Type.Contains(type)
                 select title;
 
-            resultCount = typeResults.Count();
-
-            if (resultCount == 0)
+            if(typeResults.Count() > 0)
             {
-                _render.FilterErrorMessage();
-            }
-
-            else
-            {
+                Console.WriteLine("HELLO");
                 _render.GeneralSearchGUI();
 
                 foreach (TitleBasic t in typeResults)
@@ -598,12 +593,15 @@ namespace IMDB_DATABASE
                         break;
                     }
 
-                    if (shownResults == resultCount)
+                    if (shownResults == typeResults.Count())
                     {
                         _render.EndOfDateSearchResultsWarning();
                     }
                 }
-
+            }
+            else
+            {
+                _render.FilterErrorMessage();
             }
         }
 

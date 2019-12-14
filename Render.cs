@@ -164,7 +164,7 @@ namespace IMDB_DATABASE
                     break;
                 }
             }
-            Console.WriteLine($"---------------------------------------\n");
+            Console.WriteLine($"\n---------------------------------------\n");
 
             Console.ReadKey(false);
         }
