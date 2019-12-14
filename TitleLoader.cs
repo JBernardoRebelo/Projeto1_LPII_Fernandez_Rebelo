@@ -12,15 +12,21 @@ namespace IMDB_DATABASE
     public class TitleLoader
     {
         /// <summary>
-        /// Instantiates basic titles in a file
+        /// 
         /// </summary>
-        /// <param name="filename"> Accepts a file name. </param>
-        /// <returns> Returns an ICollection of ITitle title basic info. 
-        /// </returns>
-        public ICollection<ITitle> LoadTitlesBasic(StreamReader file)
+        /// <param name="fileBasic"></param>
+        /// <param name="fileRatings"></param>
+        /// <returns></returns>
+        public ICollection<ITitle> LoadTitles(StreamReader fileBasic,
+            StreamReader fileRatings)
         {
-            // List of titlesBasic
-            List<ITitle> titlesBasic = new List<ITitle>();
+            // Method variables
+            NumberStyles numberStyles = NumberStyles.Any;
+            CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture("en-US");
+            int ratingIndex = 0;
+
+            // List of titles
+            List<ITitle> titles = new List<ITitle>();
 
             // Title basic params
             string id;
@@ -34,16 +40,31 @@ namespace IMDB_DATABASE
             List<string> genres;
 
             // Line
-            string line;
+            string lineBasic;
             string[] splitLine;
+            // Line
+            string lineRating;
+            string[] splitLine2;
 
-            // Sort file
-            while ((line = file.ReadLine()) != null)
+            // Each string is a line
+            List<string> fileR = new List<string>(996500);
+            while ((lineRating = fileRatings.ReadLine()) != null)
+            {
+                if (!lineRating.Contains("tconst"))
+                {
+                    fileR.Add(lineRating);
+                    //Console.WriteLine(lineRating);
+                }
+            }
+
+
+            // Sort files
+            while ((lineBasic = fileBasic.ReadLine()) != null)
             {
                 genres = new List<string>(3);
 
                 // Split lines in tabs
-                splitLine = line.Split('\t');
+                splitLine = lineBasic.Split('\t');
 
                 if (splitLine[0] != "tconst")
                 {
@@ -94,98 +115,48 @@ namespace IMDB_DATABASE
                         }
                     }
 
+
+                    // Title rating params
+                    float avgRating;
+                    ushort numVotes;
+                    
+                    if (fileR.ElementAt(ratingIndex).Contains(id))
+                    {
+                        splitLine2 = fileR.ElementAt(ratingIndex).Split('\t');
+
+                        float.TryParse(
+                                splitLine2[1], numberStyles, cultureInfo,
+                                out avgRating);
+
+                        ushort.TryParse(splitLine2[2], numberStyles,
+                            cultureInfo, out numVotes);
+
+                        ratingIndex++;
+                    }
+                    else
+                    {
+                        avgRating = 0;
+                        numVotes = 0;
+                    }
+
                     // Instatiate title
                     TitleBasic title = new TitleBasic(id, type,
-                        primTitle, origiTitle,
-                        isAdult, startYear,
-                        endYear, runTime, genres);
+                    primTitle, origiTitle,
+                    isAdult, startYear,
+                    endYear, runTime, genres, avgRating, numVotes);
 
                     // Add the title to the collection
-                    titlesBasic.Add(title);
+                    titles.Add(title);
                 }
             }
 
-            // Close the file
-            file.Close();
+            // Close the files
+            fileRatings.Close();
+
+            fileBasic.Close();
 
             // Returns the collection
-            return titlesBasic;
+            return titles;
         }
-
-        /// <summary>
-        /// Instanciates title ratings in a file
-        /// </summary>
-        /// <param name="file"> Accepts a file name. </param>
-        /// <returns> Returns an ICollection of ITitle title ratings. </returns>
-        public ICollection<ITitle> LoadTitlesRating(StreamReader file)
-        {
-
-            NumberStyles numberStyles = NumberStyles.Any;
-            CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture("en-US");
-
-            // Line
-            string line;
-            string[] splitLine;
-
-            // List of titlesBasic
-            List<ITitle> titlesRating = new List<ITitle>();
-
-            // Sort file
-            while ((line = file.ReadLine()) != null)
-            {
-                splitLine = line.Split('\t');
-
-                // Title Id
-                if (splitLine[0] != "tconst")
-                {
-                    // Block variables to assign
-                    int numVotes;
-                    string id = splitLine[0];
-
-                    // Title Type
-                    float.TryParse(
-                       splitLine[1], numberStyles, cultureInfo,
-                       out float avgRating);
-
-                    // Primary title
-                    numVotes = Convert.ToInt32(splitLine[2]);
-
-                    // Create a new instance of TitleRating
-                    TitleRating titleR = new TitleRating
-                        (id, avgRating, numVotes);
-
-                    // Add instance to the collection
-                    titlesRating.Add(titleR);
-                }
-            }
-
-            // Close file
-            file.Close();
-
-            // Returns the collection
-            return titlesRating;
-        }
-
-        // CREATE METH(HEAD)OD TO COMBINE COLLECTIONS
-
-        //public ICollection<ITitle> CombineTitleCollections(
-        //    ICollection<ITitle> basic, ICollection<ITitle> rating)
-        //{
-        //    rating.Join(basic,
-        //                title => title,
-                         
-        //                (fullTitle, rate) =>
-        //            new { fullTit = person.Name, Pet = pet.Name });
-
-        //    foreach (var obj in query)
-        //    {
-        //        Console.WriteLine(
-        //            "{0} - {1}",
-        //            obj.OwnerName,
-        //            obj.Pet);
-        //    }
-        //}
-
-        //Join(IEnumerable<TOuter>, IEnumerable<TInner>, Func<TOuter, TKey>, Func<TInner, TKey>, Func<TOuter, TInner, TResult>)
     }
 }

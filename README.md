@@ -28,17 +28,14 @@ chamando o método `Loop()` através de uma instância da classe `SearchLoop`.
 
 Esta classe é responsável pelo ciclo de pesquisa gerindo o _input_ do
 utilizador. Criámos uma interface `ITitle` que contém um `ID` que é comum a
-todos os _Titles_, com isto fizémos com que as `structs` `TitleBasic` e
-`TitleRating` herdassem desta.
+todos os _Titles_, com isto fizémos com que a `struct` `TitleBasic` herdasse desta.
 
 A _struct_ `TitleBasic` contem os parâmetros
-necessários para instanciar os _Titles_ vindos do ficheiro
-`title.basics.tsv.gz`, enquanto que a `struct TitleRating` tem os parâmetros
-para instanciar os _Titles_ vindos do ficheiro `title.ratings.tsv.gz`.
+necessários para instanciar os _Titles_ com todas as suas informações
+atuais vindas dos ficheiros `title.basics.tsv.gz` e `title.ratings.tsv.gz`.
 
-A classe `TitleLoader` é responsável por converter os ficheiros dados em
-coleções de `TitleRating` e `TitleBasic` que são inicializadas na classe
-`SearchLoop` onde, como referido anteriormente, é feito o ciclo de pesquisa.
+A classe `TitleLoader` é responsável por converter os ficheiros dados numa
+coleção de `ITitle` que é inicializada na classe `SearchLoop` onde, como referido anteriormente, é feito o ciclo de pesquisa.
 
 A classe `Render` é usada para demonstrar e escrever na consola o
 pretendido pelo utilizador e informações de menus.
@@ -97,6 +94,8 @@ por géneros.
 - *[FileStream Class](https://docs.microsoft.com/en-us/dotnet/api/system.io.filestream?view=netframework-4.8)*
 - *[StreamReader Class](https://docs.microsoft.com/en-us/dotnet/api/system.io.streamreader?view=netframework-4.8)*
 - *[GZipStream Class](https://docs.microsoft.com/en-us/dotnet/api/system.io.compression.gzipstream?view=netframework-4.8)*
+- *[Enumerable.Join Method](https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.join?view=netcore-3.0)*
+- *[Enumerable.ElementAt<TSource>(IEnumerable<TSource>, Int32) Method](https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.elementat?view=netframework-4.8)*
 
 **Nota:** Algumas das referências utilizadas não foram implementadas diretamente
 mas a sua forma de funcionamento foi inspiração para criação de algoritmos
