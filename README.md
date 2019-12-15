@@ -18,8 +18,8 @@ coleções. Ordenação de coleções. classe `ITitle` e derivadas, classe
 `TitleLoader`.
 
 **Miguel**: UML, classe `SearchLoop`, menus, garantir que programa leia
-independentemente da linguagem do computador. Ordenação de coleções com
-`Sort`. Expressões query e otimizações.
+independentemente da linguagem do computador. Ordenação de coleções e métodos
+de pesquisa e filtragem. Expressões query e otimizações.
 
 ## Descrição e arquitetura da Solução
 
